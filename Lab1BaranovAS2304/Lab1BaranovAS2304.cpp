@@ -152,89 +152,262 @@ void show_Pipe(const Pipe& P) {
 void show_cs(const compressor_station& CS) {
     cout << "Компрессорная станция: " << "ID-CS: " << CS.id << "; Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
 }
-void filter_Pipe(const vector<Pipe>& P_groupe, string Name, bool repair) {
-    vector<Pipe> filter;
-    for (const auto& Pipe : P_groupe) {
-        if (Pipe.Name == Name && Pipe.repair == repair) {
-            show_Pipe(Pipe);
-        }
-        else if (Name == "" && Pipe.repair == repair) {
-            show_Pipe(Pipe);
-        }
-        else if (Pipe.Name == Name && repair == 3) {
-            show_Pipe(Pipe);
-        }
-        else {
-            cout << "Труб по вашим фильтрам не нашлось" << endl;
+
+void searchfilter_Pipe(const vector<Pipe>& P_groupe, string Name, int repair,vector<Pipe>& filterP) {
+    if (Name != "" && repair != 3) {
+        for (const auto& Pipe : P_groupe) {
+            if (Pipe.Name == Name && Pipe.repair == repair) {
+                filterP.push_back(Pipe);
+            }
         }
     }
-}
-void filter_CS(const const vector<compressor_station>& CS_groupe) {
-    cout << endl << "КОМПРЕССОРНЫЕ СТАНЦИИ: " << endl;
-    for (const auto& compressor_station : CS_groupe) {
-        show_cs(compressor_station);
+    else if (Name != "" && repair == 3) {
+        for (const auto& Pipe : P_groupe) {
+            if (Pipe.Name == Name) {
+                filterP.push_back(Pipe);
+            }
+        }
     }
+    else if (Name == "" && repair != 3) {
+        for (const auto& Pipe : P_groupe) {
+            if (Pipe.repair == repair) {
+                filterP.push_back(Pipe);
+            }
+        }
+    }
+    else if (Name == "" && repair == 3){
+        for (const auto& Pipe : P_groupe) {     
+            filterP.push_back(Pipe);
+        }
+    }
+    if (filterP.size() == 0) {
+        cout << endl << "----------------------" << endl;
+        cout << "Нет труб подходящих под ваши фильтры" << endl;
+        cout << "----------------------" << endl << endl;
+    }
+    else {
+        cout << endl << "----------------------" << endl;
+        for (const auto& Pipe : filterP) {
+            show_Pipe(Pipe);
+        }
+        cout << "----------------------" << endl << endl;
+    }
+    filterP.clear();
 }
 
-void view_all(const vector<Pipe>& P_groupe, const vector<compressor_station>& CS_groupe) {
-    int m = 0;
+void menu_Pipe(bool check_NameP, bool check_RepairP) {
+    cout << "Задайте фильтр для труб которые вы хотите посмотреть (если не хотите использовать фильтр просто не заполняйте его)" << endl 
+    << "1) По имени(" << (check_NameP ? "Заполнен" : "Не заполнен") << ")" << endl
+    << "2) По статусу 'в ремонте'(" << (check_RepairP ? "Заполнен" : "Не заполнен") << ")" << endl
+    << "3) Просмотр труб " << endl
+    << "4) Сбросить фильтр " << endl
+    << "0) Выход" << endl
+    << "Введите команду: ";
+}
+
+void filterPipe(const vector<Pipe>& P_groupe, vector<Pipe>& filterP) {
+    bool check_Name = 0;
+    bool check_Repair = 0;
     string Name = "";
     int repair = 3;
-    if (P_groupe.size() != 0 || CS_groupe.size() != 0) {
-        while (true) {
-            cout << "Выберите объекты которые вы хотите просмотреть: " << endl << "1) Трубы" << endl << "2) Компрессорные станции" << endl << "0) Выход" << endl;
-            m = check(2, 0);
-            if (m == 1) {
-                while (true) {
-                    cout << "Задайте фильтр для труб которые вы хотите посмотреть (если не хотите использовать фильтр просто не заполняйте его)" << endl << "1) По имени:" << endl << "2) По статусу 'в ремонте' " << endl << "3) Просмотр труб " << endl << "0) Выход" << endl;
-                    m = check(3, 0);
-                    if (m == 1) {
-                        cout << "Введите имя по которому вы хотите задать поиск: ";
-                        getline(cin, Name);
-                    }
-                    if (m == 2) {
-                        cout << "Введите статус 'в ремонте' по которому вы хотите задать поиск: ";
-                        repair = check(1, 0);
-                    }
-                    if (m == 3) {
-                        filter_Pipe(P_groupe, Name, repair);
-                    }
-                    if (m == 0) {
-                        break;
-                    }
-                }
-            }
-            if (m == 2) {
+    int m = 0;
+    while (true) {
+        menu_Pipe(check_Name, check_Repair);
+        m = check(4, 0);
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            cout << "Введите имя по которому вы будете фильтровать трубы: ";
+            getline(cin, Name);
+            check_Name = 1;
+        }
+        if (m == 2) {
+            cout << "Введите статус 'В ремонте' по которому вы будете фильтровать трубы (1 в ремонте, 0 не в ремонте): ";
+            repair = check(1, 0);
+            check_Repair = 1;
+        }
+        if (m == 3) {
+            searchfilter_Pipe(P_groupe, Name, repair, filterP);
+        }
+        if (m == 4) {
+            check_Name = 0;
+            check_Repair = 0;
+            Name = "";
+            repair = 3;
+        }
+    }
+}
 
-            }
-            if (m == 0) {
-                break;
+void searchfilter_CS(const vector<compressor_station>& CS_groupe, string Name, int work, vector<compressor_station>& filter_CS) {
+    if (Name != "" && work != -1) {
+        filter_CS.clear();
+        for (const auto& compressor_station : CS_groupe) {
+            if (compressor_station.Name == Name && (100 - (float(compressor_station.workshopsinwork) / float(compressor_station.workshops)) * 100) == work) {
+                filter_CS.push_back(compressor_station);
             }
         }
+    }
+    else if (Name != "" && work == -1) {
+        filter_CS.clear();
+        for (const auto& compressor_station : CS_groupe) {
+            if (compressor_station.Name == Name) {
+                filter_CS.push_back(compressor_station);
+            }
+        }
+    }
+    else if (Name == "" && work != -1) {
+        filter_CS.clear();
+        for (const auto& compressor_station : CS_groupe) {
+            if ((100 - (float(compressor_station.workshopsinwork) / float(compressor_station.workshops)) * 100) == work){
+                filter_CS.push_back(compressor_station);
+            }
+        }
+    }
+    else if (Name == "" && work == -1) {
+        filter_CS.clear();
+        for (const auto& compressor_station : CS_groupe) {
+            filter_CS.push_back(compressor_station);
+        }
+    }
+    if (filter_CS.size() == 0) {
+        cout << endl << "----------------------" << endl;
+        cout << "Нет КС подходящих под ваши фильтры" << endl;
+        cout << "----------------------" << endl << endl;
+    }
+    else {
+        cout << endl << "----------------------" << endl;
+        for (const auto& compressor_station : filter_CS) {
+            show_cs(compressor_station);
+        }
+        cout << "----------------------" << endl << endl;
+    }
+}
+
+void menu_CS(bool check_NameCS, bool check_RepairCS) {
+    cout << "Задайте фильтр для КС которые вы хотите посмотреть (если не хотите использовать фильтр просто не заполняйте его)" << endl
+        << "1) По имени(" << (check_NameCS ? "Заполнен" : "Не заполнен") << ")" << endl
+        << "2) По проценту незадействованных цехов(" << (check_RepairCS ? "Заполнен" : "Не заполнен") << ")" << endl
+        << "3) Просмотр КС " << endl
+        << "4) Сбросить фильтр " << endl
+        << "0) Выход" << endl
+        << "Введите команду: ";
+
+}
+
+void filterCS(const vector<compressor_station>& CS_groupe, vector<compressor_station>& filter_CS) {
+    bool check_Name = 0;
+    bool check_work = 0;
+    string Name = "";
+    int work = -1;
+    int m = 0;
+    while (true) {
+        menu_CS(check_Name, check_work);
+        m = check(4, 0);
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            cout << "Введите имя по которому вы будете фильтровать КС: ";
+            getline(cin, Name);
+            check_Name = 1;
+        }
+        if (m == 2) {
+            cout << "Введите процент незапущенных цехов по которому вы будете фильтровать КС: ";
+            work = check(100, 0);
+            check_work = 1;
+        }
+        if (m == 3) {
+            searchfilter_CS(CS_groupe, Name, work, filter_CS);
+        }
+        if (m == 4) {
+            check_Name = 0;
+            check_work = 0;
+            Name = "";
+            work = -1;
+        }
+    }
+}
+
+void view_all(const vector<Pipe>& P_groupe, const vector<compressor_station>& CS_groupe, vector<Pipe>& filterP, vector<compressor_station>& filter_CS) {
+    int m = 0;
+    if (P_groupe.size() != 0 && CS_groupe.size() != 0) {
+        while (true) {
+            cout << "Выберите группу объектов которую вы хотите просмотреть: " << endl << "1) Трубы " << endl << "2) Компрессорные станции" << endl << "0) Выход" << endl << "Введите цифру от 0 до 2: ";
+            m = check(2, 0);
+            if (m == 1) {
+                filterPipe(P_groupe, filterP);
+            }
+            else if (m == 2) {
+                filterCS(CS_groupe, filter_CS);
+            }
+            else if (m == 0) {
+                break;
+            }
+        }  
+    }
+    else if (P_groupe.size() != 0 && CS_groupe.size() == 0) {
+        cout << "У вас нет объектов типа КС, поэтому вы можете просмотреть только трубы: " << endl;
+        filterPipe(P_groupe, filterP);
+    }
+    else if (P_groupe.size() == 0 && CS_groupe.size() != 0) {
+        cout << "У вас нет объектов типа труба, поэтому вы можете просмотреть только КС: " << endl;
+        filterCS(CS_groupe, filter_CS);
     }
     else {
         cout << "Вы еще не добавили ни одного объекта." << endl;
     }
 }
 
-void edit_Pipe(Pipe& P) {
+void edit_Pipe(vector<Pipe>& P_groupe,vector<Pipe>& filterP) {
     int m = 0;
-    if (P.diameter > 0) {
-        while (true) {
-            cout << "Выберите параметр который вы хотите отредактировать: " << endl << "1) Статус 'в ремонте'" << endl << "0) Выход в меню" << endl << "Номер команды: ";
-            m = check(1, 0);
-            if (m == 0) {
-                break;
-            }
-            else if (m == 1) {
-                cout << "Старый статус трубы: в ремонте " << boolalpha << P.repair << endl;
-                cout << "Выберите новый статус трубы: " << endl << "0)Не в ремонте" << endl << "1)В ремонте" << endl << "Введите номер команды: ";
-                P.repair = check(1, 0);
+    int check_fil = 0;
+    string Name = "";
+    int repair = -1;
+    while (true) {
+        cout << "Что вы хотите сделать(если фильтр не задан трубы невозможно редактировать)?" << endl << "1) Задать фильтр для редактирования(" << (check_fil ? "Заполнен" : "Не заполнен") << ")" << endl << "2) Редактировать выбранные трубы" << endl << "0) Выход" << endl << "Введите команду: ";
+        m = check(2, 0);
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            filterPipe(P_groupe, filterP);
+            check_fil = 1;
+        }
+        if (m == 2) {
+            while (true) {
+                cout << "Что вы хотите отредактировать у выбраной группы?" << endl << "1) Название" << endl << "2) Статус 'в ремонте'" << endl << "0) Выход" << endl << "Введите команду: ";
+                m = check(2, 0);
+                if (m == 0) {
+                    break;
+                }
+                if (m == 1) {
+                    cout << "Введите новое название: ";
+                    getline(cin, Name);
+                    for (auto& Pipe1 : P_groupe) {
+                        for (auto& Pipe2 : filterP) {
+                            Pipe2.Name = Name;
+                            if (Pipe1.id == Pipe2.id) {
+                                Pipe1 = Pipe2;
+                            }
+                        }
+                    }
+                }
+                if (m == 2) {
+                    cout << "Введите новый статус 'в ремонте'( 1 - в ремонте; 0 - не в ремонте ): ";
+                    m = check(1, 0);
+                    repair = m;
+                    for (auto& Pipe1 : P_groupe) {
+                        for (auto& Pipe2 : filterP) {
+                            Pipe2.repair = repair;
+                            if (Pipe1.id == Pipe2.id) {
+                                Pipe1 = Pipe2;
+                            }
+                        }
+                    }
+                }
             }
         }
-    }
-    else {
-        cout << "Вы еще не добавили трубу и не можете посмотреть ее параметры. Пожалуйста настройтe трубу в меню(пункт 1)" << endl;
     }
 }
 
@@ -260,14 +433,14 @@ void edit_CS(compressor_station& CS) {
 }
 void SavePipe(const Pipe& P, ofstream& out)
 {
-    out << "data Pipe:" << endl;
+    out << "data Pipe id("<<P.id<<"):" << endl;
     out << P.Name << endl;
     out << P.id << " " << P.length << " " << P.diameter << " " << P.repair << endl;
 }
 
 void SaveCS(const compressor_station& CS, ofstream& out)
 {
-    out << "data CS:" << endl;
+    out << "data CS id("<<CS.id<<"):" << endl;
     out << CS.Name << endl;
     out << CS.id << " " << CS.workshops << " " << CS.workshopsinwork << " " << CS.effectiveness << endl;;
 }
@@ -285,22 +458,35 @@ void loadCS(compressor_station& CS, ifstream& in) {
         in >> CS.id >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
     }
 }
-void save(const Pipe& P,const compressor_station& CS) {
+void save(const vector<Pipe> P_groupe,const vector<compressor_station> CS_groupe) {
     ofstream out;
     out.open("datapipecs.txt");
     if (out.is_open())
     {
-        if (P.Name.empty() && CS.Name.empty()) {
+        if (P_groupe.size() == 0 && CS_groupe.size() == 0) {
             cout << "У вас нет данных для записи!" << endl;
             return;
         }
-        if (!P.Name.empty() && CS.Name.empty()) {
-            SavePipe(P, out);
-            cout << "Данные о трубе записаны!" << endl;
+        else if (P_groupe.size() != 0 && CS_groupe.size() == 0) {
+            for (const auto& Pipe : P_groupe) {
+                SavePipe(Pipe,out);
+            }
+        cout << "Данные о трубах записаны!" << endl;
         }
-        if (!CS.Name.empty() && P.Name.empty()) {
-            SaveCS(CS, out);
-            cout << "Данные о КС записаны!" << endl;
+        else if (P_groupe.size() == 0 && CS_groupe.size() != 0) {
+            for (const auto& compressor_station : CS_groupe) {
+                SaveCS(compressor_station, out);
+            }
+        cout << "Данные о КС записаны!" << endl;
+        }
+        else if (P_groupe.size() != 0 && CS_groupe.size() != 0) {
+            for (const auto& compressor_station : CS_groupe) {
+                SaveCS(compressor_station, out);
+            }
+            for (const auto& Pipe : P_groupe) {
+                SavePipe(Pipe, out);
+            }
+        cout << "Данные о трубах и КС записаны!" << endl;
         }
 
     }
@@ -331,6 +517,8 @@ int main() {
     setlocale(LC_ALL, "RU");
     vector<Pipe> P_groupe;
     vector<compressor_station> CS_groupe;
+    vector <Pipe> filterP;
+    vector<compressor_station> filter_CS;
     while (true) {
         int k = menu();
         if (k == 0) {
@@ -347,16 +535,16 @@ int main() {
             CS_groupe.push_back(CS);
         }
         else if (k == 3) {
-            view_all(P_groupe, CS_groupe);
+            view_all(P_groupe, CS_groupe,filterP, filter_CS);
         }
         else if (k == 4) {
-            //edit_Pipe(P);
+            edit_Pipe(P_groupe, filterP);
         }
         else if (k == 5) {
             //edit_CS(CS);
         }
         else if (k == 6) {
-            //save(P, CS);
+            save(P_groupe, CS_groupe);
         }
         else if (k == 7) {
             //load(P, CS);
