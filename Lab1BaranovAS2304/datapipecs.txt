@@ -1,6 +1,14 @@
-data CS id(1):
-Mytcs
-1 120 10 1
-data Pipe id( 1):
-My pie
-1 12 1 1
+data Pipe:
+1
+My pipe
+123 12 1
+2
+My pipe2
+123 22 1
+data CS:
+1
+My cs
+123 100 100
+2
+My cs2
+123 111 12
