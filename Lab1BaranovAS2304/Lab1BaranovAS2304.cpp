@@ -220,6 +220,8 @@ void edit_Pipes(unordered_map<int, Pipe>& Pipes, unordered_map<int, Pipe>& Pipes
             cout << "У вас еще нет ни одной трубы" << endl;
         }
         else {
+            cout << "Все трубы: " << endl;
+            view_objects(Pipes, show_Pipe);
             cout << "Введите ID трубы, которую вы хотите отредактировать: ";
             int id = check<int>(0, INT_MAX);
             auto it = Pipes.find(id);
@@ -246,6 +248,8 @@ void edit_Pipes(unordered_map<int, Pipe>& Pipes, unordered_map<int, Pipe>& Pipes
     }
     else {
         if (!Pipes_filter.empty()) {
+            cout << "Все отфильтрованные трубы: " << endl;
+            view_objects(Pipes_filter, show_Pipe);
             while (true) {
                 cout << "Выберите параметр, который вы хотите отредактировать: " << endl << "1) Статус 'в ремонте'" << endl << "0) Выход в меню" << endl << "Номер команды: ";
                 m = check<int>(0, 1);
@@ -296,6 +300,8 @@ void edit_CS(unordered_map<int, compressor_station>& Stations, unordered_map<int
             cout << "У вас еще нет ни одной компрессорной станции" << endl;
         }
         else {
+            cout << "Все компрессорные станции: " << endl;
+            view_objects(Stations, show_cs);
             cout << "Введите ID компрессорной станции, которую вы хотите отредактировать: ";
             int id = check<int>(0, INT_MAX);
             auto it = Stations.find(id);
@@ -323,6 +329,8 @@ void edit_CS(unordered_map<int, compressor_station>& Stations, unordered_map<int
     }
     else {
         if (!Stations_filter.empty()) {
+            cout << "Все отфильтрованные компрессорные станции: " << endl;
+            view_objects(Stations_filter, show_cs);
             while (true) {
                 cout << "Выберите параметр, который вы хотите отредактировать: " << endl << "1) Кол-во цехов в работе" << endl << "0) Выход в меню" << endl << "Номер команды: ";
                 m = check<int>(0, 1);
