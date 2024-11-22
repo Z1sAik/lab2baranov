@@ -8,8 +8,10 @@
 #include <vector>
 using namespace std;
 
+
 template <typename T>
 T check(T low, T max) {
+    setlocale(LC_ALL, "RU");
     T z;
     cin >> z;
     cin.ignore();
