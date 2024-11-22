@@ -86,7 +86,57 @@ void view_objects_vector(const vector<int>& objects, const unordered_map<int, T>
         }
     }
 }
+/*template <typename T>
+void edit_single_object(unordered_map<int, T>& objects, const string& objectType) {
+    int m = 0;
+    cout << "Все " << objectType << ": " << endl;
 
+    if (objectType == "Трубы") {
+        view_objects(objects, show_Pipe);
+    }
+    else if (objectType == "Компрессорные станции") {
+        view_objects(objects, show_cs);
+    }
+
+    cout << "Введите ID " << objectType << ", который вы хотите отредактировать: ";
+    int id = check<int>(0, INT_MAX);
+
+    auto it = objects.find(id);
+    if (it != objects.end()) {
+        T& obj = it->second;
+        while (true) {
+            cout << "Выберите параметр, который вы хотите отредактировать: " << endl;
+            if (objectType == "Трубы") {
+                cout << "1) Статус трубы 'в ремонте'" << endl;
+            }
+            else if (objectType == "Компрессорные станции") {
+                cout << "1) Кол-во цехов в работе" << endl;
+            }
+            cout << "0) Выход в меню" << endl << "Номер команды: ";
+            m = check<int>(0, 1);
+
+            if (m == 0) {
+                break;
+            }
+            if (m == 1) {
+                if (objectType == "Трубы") {
+                    cout << "Старый статус трубы: " << boolalpha << it->second.repair << endl;
+                    cout << "Введите новый статус трубы (0 - не в ремонте, 1 - в ремонте): ";
+                    it->second.repair = check<int>(0, 1);
+                }
+                else if (objectType == "Компрессорные станции") {
+                    cout << "Старое кол-во цехов в работе: " << it->second.workshopsinwork << endl;
+                    cout << "Введите новое кол-во цехов в работе: ";
+                    int workshopsinwork = check<int>(0, it->second.workshops);
+                    it->second.workshopsinwork = workshopsinwork;
+                }
+            }
+        }
+    }
+    else {
+        cout << objectType << " с таким ID не найдена!" << endl;
+    }
+}*/
 
 
 int menu();

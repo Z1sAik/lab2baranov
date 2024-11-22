@@ -51,13 +51,11 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
 void setFilterParams(string& Name_Filter, int& Status_Filter, const string& ObjectType) {
     int m = 0;
     while (true) {
-        cout << "Какой фильтр для " << ObjectType << " вы хотите задать:" << endl << "1) По имени (" << (!Name_Filter.empty() ? "Заполнен" : "Не заполнен") << ")" << endl << "2) По статусу (" << (Status_Filter != -1 ? "Заполнен" : "Не заполнен") << ")" << endl << "3) Сбросить фильтр" << endl << "0) Выход" << endl;
+        cout << "Какой фильтр для " << ObjectType << " вы хотите задать:" << endl << "1) По имени (" << (!Name_Filter.empty() ? "Заполнен" : "Не заполнен") << ")" << endl << "2) По статусу (" << (Status_Filter != -1 && Status_Filter != -2 ? "Заполнен" : "Не заполнен") << ")" << endl << "3) Сбросить фильтр" << endl << "0) Выход" << endl;
         m = check<int>(0, 3);
-
         if (m == 0) {
             break;
         }
-
         if (m == 1) {
             cout << "Введите имя по которому вы будете фильтровать " << ObjectType << ": ";
             getline(cin, Name_Filter);
@@ -67,9 +65,16 @@ void setFilterParams(string& Name_Filter, int& Status_Filter, const string& Obje
             Status_Filter = check<int>(0, (ObjectType == "трубы" ? 1 : 100));
         }
         else if (m == 3) {
-            Name_Filter = "";
-            Status_Filter = -1;
-            cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
+            if (ObjectType == "труба") {
+                Name_Filter = "";
+                Status_Filter = -1;
+                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
+            }
+            else {
+                Name_Filter = "";
+                Status_Filter = -2;
+                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
+            }
         }
     }
 }
@@ -78,11 +83,10 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
     string Name_P = "";
     int Repair_P = -1;
     string Name_CS = "";
-    int work_CS = -1;
+    int work_CS = -2;
     int m = 0;
     while (true) {
-        cout << "Если вы зайдёте в фильтр и не зададите ни один параметр, то все объекты будут добавлены в фильтр!" << endl;
-        cout << "Выберите, для какого объекта вы хотите задать фильтры:" << endl << "1) Фильтр для трубы" << endl << "2) Фильтр для КС" << endl << "0) Выход" << endl;
+        cout << "Выберите, для какого объекта вы хотите задать фильтры:" << endl << "1) Фильтр для трубы" << endl << "2) Фильтр для КС"<< endl << "0) Выход" << endl;
         m = check<int>(0, 2);
 
         if (m == 1) {

@@ -1,14 +1,14 @@
 data Pipe:
 1
-My pipe
-123 10 0
+Msda
+213 1 1
 2
-My pipe
-123 101 0
-3
-ase1
-3 1 0
+MSasd
+1 1 0
 data CS:
 1
-mTasd
-123 1 0
+MSAd
+2 1 0
+2
+SADq
+1 1 0

@@ -22,6 +22,7 @@ void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int&
         int id;
         compressor_station CS;
         while (in >> id) {
+            CS.id = id;
             getline(in >> ws, CS.Name);
             in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
             Stations[id] = CS;
@@ -33,7 +34,7 @@ void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int&
 }
 
 void show_cs(const compressor_station& CS) {
-    cout << "Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
+    cout << "ID: " << CS.id << "; Название КС: " << CS.Name << "; Кол-во цехов: " << CS.workshops << "; Кол-во цехов в работе: " << CS.workshopsinwork << "; Коэффициент эффективности КС: " << CS.effectiveness << endl;
 }
 
 void menu_new_ks(compressor_station& CS) {

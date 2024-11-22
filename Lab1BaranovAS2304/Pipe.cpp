@@ -21,6 +21,7 @@ void loadPipe(unordered_map<int, Pipe>& Pipes, ifstream& in, int& maxPipeID) {
         int id;
         Pipe P;
         while (in >> id) {
+            P.id = id;
             getline(in >> ws, P.Name);
             in >> P.length >> P.diameter >> P.repair;
             Pipes[id] = P;
