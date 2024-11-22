@@ -12,17 +12,17 @@ using namespace std;
 int menu() {
     int k = -1;
     while (true) {
-        cout << "///////  Меню  ///////" << endl
-            << "1) Добавить трубу" << endl
-            << "2) Добавить КС" << endl
-            << "3) Задать фильтр" << endl
-            << "4) Просмотр объектов" << endl
-            << "5) Редактировать трубу" << endl
-            << "6) Редактировать КС" << endl
-            << "7) Сохранить данные" << endl
-            << "8) Загрузить данные" << endl
-            << "0) Выход" << endl
-            << "Введите команду которую вы бы хотели выполнить(от 0 до 8): ";
+        cout << "///////  РњРµРЅСЋ  ///////" << endl
+            << "1) Р”РѕР±Р°РІРёС‚СЊ С‚СЂСѓР±Сѓ" << endl
+            << "2) Р”РѕР±Р°РІРёС‚СЊ РљРЎ" << endl
+            << "3) Р—Р°РґР°С‚СЊ С„РёР»СЊС‚СЂ" << endl
+            << "4) РџСЂРѕСЃРјРѕС‚СЂ РѕР±СЉРµРєС‚РѕРІ" << endl
+            << "5) Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ С‚СЂСѓР±Сѓ" << endl
+            << "6) Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РљРЎ" << endl
+            << "7) РЎРѕС…СЂР°РЅРёС‚СЊ РґР°РЅРЅС‹Рµ" << endl
+            << "8) Р—Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ" << endl
+            << "0) Р’С‹С…РѕРґ" << endl
+            << "Р’РІРµРґРёС‚Рµ РєРѕРјР°РЅРґСѓ РєРѕС‚РѕСЂСѓСЋ РІС‹ Р±С‹ С…РѕС‚РµР»Рё РІС‹РїРѕР»РЅРёС‚СЊ(РѕС‚ 0 РґРѕ 8): ";
         k = check<int>(0, 8);
         return k;
     }
@@ -43,7 +43,7 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
         for (auto& pair : Stations) {
             SaveCS(pair.first, pair.second, out);
         }
-        cout << "Данные сохранены!" << endl;
+        cout << "Р”Р°РЅРЅС‹Рµ СЃРѕС…СЂР°РЅРµРЅС‹!" << endl;
     }
     out.close();
 }
@@ -51,29 +51,29 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
 void setFilterParams(string& Name_Filter, int& Status_Filter, const string& ObjectType) {
     int m = 0;
     while (true) {
-        cout << "Какой фильтр для " << ObjectType << " вы хотите задать:" << endl << "1) По имени (" << (!Name_Filter.empty() ? "Заполнен" : "Не заполнен") << ")" << endl << "2) По статусу (" << (Status_Filter != -1 && Status_Filter != -2 ? "Заполнен" : "Не заполнен") << ")" << endl << "3) Сбросить фильтр" << endl << "0) Выход" << endl;
+        cout << "РљР°РєРѕР№ С„РёР»СЊС‚СЂ РґР»СЏ " << ObjectType << " РІС‹ С…РѕС‚РёС‚Рµ Р·Р°РґР°С‚СЊ:" << endl << "1) РџРѕ РёРјРµРЅРё (" << (!Name_Filter.empty() ? "Р—Р°РїРѕР»РЅРµРЅ" : "РќРµ Р·Р°РїРѕР»РЅРµРЅ") << ")" << endl << "2) РџРѕ СЃС‚Р°С‚СѓСЃСѓ (" << (Status_Filter != -1 && Status_Filter != -2 ? "Р—Р°РїРѕР»РЅРµРЅ" : "РќРµ Р·Р°РїРѕР»РЅРµРЅ") << ")" << endl << "3) РЎР±СЂРѕСЃРёС‚СЊ С„РёР»СЊС‚СЂ" << endl << "0) Р’С‹С…РѕРґ" << endl;
         m = check<int>(0, 3);
         if (m == 0) {
             break;
         }
         if (m == 1) {
-            cout << "Введите имя по которому вы будете фильтровать " << ObjectType << ": ";
+            cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РІС‹ Р±СѓРґРµС‚Рµ С„РёР»СЊС‚СЂРѕРІР°С‚СЊ " << ObjectType << ": ";
             getline(cin, Name_Filter);
         }
         else if (m == 2) {
-            cout << "Введите статус для фильтрации (" << (ObjectType == "трубы" ? "0 = Не в ремонте, 1 = В ремонте" : "Введите процент цехов, не в работе") << "): ";
-            Status_Filter = check<int>(0, (ObjectType == "трубы" ? 1 : 100));
+            cout << "Р’РІРµРґРёС‚Рµ СЃС‚Р°С‚СѓСЃ РґР»СЏ С„РёР»СЊС‚СЂР°С†РёРё (" << (ObjectType == "С‚СЂСѓР±С‹" ? "0 = РќРµ РІ СЂРµРјРѕРЅС‚Рµ, 1 = Р’ СЂРµРјРѕРЅС‚Рµ" : "Р’РІРµРґРёС‚Рµ РїСЂРѕС†РµРЅС‚ С†РµС…РѕРІ, РЅРµ РІ СЂР°Р±РѕС‚Рµ") << "): ";
+            Status_Filter = check<int>(0, (ObjectType == "С‚СЂСѓР±С‹" ? 1 : 100));
         }
         else if (m == 3) {
-            if (ObjectType == "труба") {
+            if (ObjectType == "С‚СЂСѓР±Р°") {
                 Name_Filter = "";
                 Status_Filter = -1;
-                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
+                cout << "Р¤РёР»СЊС‚СЂ РґР»СЏ " << ObjectType << " СЃР±СЂРѕС€РµРЅ!" << endl;
             }
             else {
                 Name_Filter = "";
                 Status_Filter = -2;
-                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
+                cout << "Р¤РёР»СЊС‚СЂ РґР»СЏ " << ObjectType << " СЃР±СЂРѕС€РµРЅ!" << endl;
             }
         }
     }
@@ -86,14 +86,14 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
     int work_CS = -2;
     int m = 0;
     while (true) {
-        cout << "Выберите, для какого объекта вы хотите задать фильтры:" << endl << "1) Фильтр для трубы" << endl << "2) Фильтр для КС"<< endl << "0) Выход" << endl;
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ, РґР»СЏ РєР°РєРѕРіРѕ РѕР±СЉРµРєС‚Р° РІС‹ С…РѕС‚РёС‚Рµ Р·Р°РґР°С‚СЊ С„РёР»СЊС‚СЂС‹:" << endl << "1) Р¤РёР»СЊС‚СЂ РґР»СЏ С‚СЂСѓР±С‹" << endl << "2) Р¤РёР»СЊС‚СЂ РґР»СЏ РљРЎ"<< endl << "0) Р’С‹С…РѕРґ" << endl;
         m = check<int>(0, 2);
 
         if (m == 1) {
-            setFilterParams(Name_P, Repair_P, "трубы");
+            setFilterParams(Name_P, Repair_P, "С‚СЂСѓР±С‹");
         }
         else if (m == 2) {
-            setFilterParams(Name_CS, work_CS, "КС");
+            setFilterParams(Name_CS, work_CS, "РљРЎ");
         }
         else if (m == 0) {
             filter_P(Pipes, Name_P, Repair_P, filt_keys_Pipe);
@@ -106,32 +106,32 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
 void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int> &filt_keys_Pipe, vector<int>& filt_keys_CS) {
     int m = 0;
     while (true) {
-        cout << "Что вы хотите просмотреть?:" << endl << "1) Все объекты" << endl << "2) Объекты заданные по фильтру" << endl << "0) Выход" << endl;
+        cout << "Р§С‚Рѕ РІС‹ С…РѕС‚РёС‚Рµ РїСЂРѕСЃРјРѕС‚СЂРµС‚СЊ?:" << endl << "1) Р’СЃРµ РѕР±СЉРµРєС‚С‹" << endl << "2) РћР±СЉРµРєС‚С‹ Р·Р°РґР°РЅРЅС‹Рµ РїРѕ С„РёР»СЊС‚СЂСѓ" << endl << "0) Р’С‹С…РѕРґ" << endl;
         m = check<int>(0, 2);
         if (m == 0) {
             break;
         }
         if (m == 1) {
             if (!Pipes.empty()) {
-                cout << "Все трубы: " << endl;
+                cout << "Р’СЃРµ С‚СЂСѓР±С‹: " << endl;
                 view_objects(Pipes, show_Pipe);
             }
             if (!Stations.empty()) {
-                cout << "Все компрессорные станции: " << endl;
+                cout << "Р’СЃРµ РєРѕРјРїСЂРµСЃСЃРѕСЂРЅС‹Рµ СЃС‚Р°РЅС†РёРё: " << endl;
                 view_objects(Stations, show_cs);
             }
             objects_empty(Pipes, Stations);
         }
         if (m == 2) {
             if (!filt_keys_Pipe.empty()) {
-                cout << "Все отфильтрованные трубы: " << endl;
+                cout << "Р’СЃРµ РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Рµ С‚СЂСѓР±С‹: " << endl;
                 view_objects_vector(filt_keys_Pipe, Pipes, show_Pipe);
             }
             if (!filt_keys_CS.empty()) {
-                cout << "Все отфильтрованные компрессорные станции: " << endl;
+                cout << "Р’СЃРµ РѕС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Рµ РєРѕРјРїСЂРµСЃСЃРѕСЂРЅС‹Рµ СЃС‚Р°РЅС†РёРё: " << endl;
                 view_objects_vector(filt_keys_CS, Stations, show_cs);
             }
             objects_empty_vector(filt_keys_Pipe, filt_keys_CS);
         }
-    }
+    } 
 }

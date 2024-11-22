@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <fstream>
 #include "Pipe.h"
@@ -10,7 +10,7 @@ using namespace std;
 int main() {
     vector<int> filt_keys_Pipe;
     vector<int> filt_keys_CS;
-    setlocale(LC_ALL, "RU");
+    setlocale(LC_ALL, "RU"); 
     Pipe P;
     compressor_station CS;
     unordered_map<int, Pipe> Pipes = {};

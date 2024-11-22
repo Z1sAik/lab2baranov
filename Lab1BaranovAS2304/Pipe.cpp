@@ -19,7 +19,7 @@ void SavePipe(int pipeID, const Pipe& P, ofstream& out)
 void loadPipe(unordered_map<int, Pipe>& Pipes, ifstream& in, int& maxPipeID) {
     if (in.is_open()) {
         int id;
-        Pipe P;
+        Pipe P; 
         while (in >> id) {
             P.id = id;
             getline(in >> ws, P.Name);
@@ -33,19 +33,19 @@ void loadPipe(unordered_map<int, Pipe>& Pipes, ifstream& in, int& maxPipeID) {
 }
 
 void show_Pipe(const Pipe& P) {
-    cout << "ID: " << P.id << "; Íàçâàíèå òðóáû: " << P.Name << "; Äëèíà òðóáû: " << P.length << "; Äèàìåòð òðóáû: " << P.diameter << "; Ñòàòóñ 'â ðåìîíòå': " << boolalpha << P.repair << endl;
+    cout << "ID: " << P.id << "; ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << P.Name << "; Ð”Ð»Ð¸Ð½Ð° Ñ‚Ñ€ÑƒÐ±Ñ‹: " << P.length << "; Ð”Ð¸Ð°Ð¼ÐµÑ‚Ñ€ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << P.diameter << "; Ð¡Ñ‚Ð°Ñ‚ÑƒÑ 'Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ': " << boolalpha << P.repair << endl;
 }
 
 void menu_new_Pipe(Pipe& P) {
     P.id = ++P.maxPipeID;
     cout << "ID: " << P.id << endl;
-    cout << "Ââåäèòå íàçâàíèå òðóáû (íà àíãëèéñêîì ÿçûê): ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ‚Ñ€ÑƒÐ±Ñ‹ (Ð½Ð° Ð°Ð½Ð³Ð»Ð¸Ð¹ÑÐºÐ¾Ð¼ ÑÐ·Ñ‹Ðº): ";
     getline(cin, P.Name);
-    cout << "Ââåäèòå äëèíó òðóáû â êèëîìåòðàõ: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð´Ð»Ð¸Ð½Ñƒ Ñ‚Ñ€ÑƒÐ±Ñ‹ Ð² ÐºÐ¸Ð»Ð¾Ð¼ÐµÑ‚Ñ€Ð°Ñ…: ";
     P.length = check<float>(0.1, 0);
-    cout << "Ââåäèòå äèàìåòð òðóáû â ìèëëèìåòðàõ: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð´Ð¸Ð°Ð¼ÐµÑ‚Ñ€ Ñ‚Ñ€ÑƒÐ±Ñ‹ Ð² Ð¼Ð¸Ð»Ð»Ð¸Ð¼ÐµÑ‚Ñ€Ð°Ñ…: ";
     P.diameter = check<int>(1, 0);
-    cout << "Âûáåðèòå â êàêîì ñîñòîÿíèè òðóáà: " << endl << "0)Íå â ðåìîíòå" << endl << "1)Â ðåìîíòå" << endl;
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð² ÐºÐ°ÐºÐ¾Ð¼ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ð¸ Ñ‚Ñ€ÑƒÐ±Ð°: " << endl << "0)ÐÐµ Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl << "1)Ð’ Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl;
     P.repair = check<int>(0, 1);
     show_Pipe(P);
 }
@@ -62,9 +62,9 @@ void filter_P(const unordered_map<int, Pipe>& Pipes, string Name_def, int rep_de
 
 void edit_single_pipe(unordered_map<int, Pipe>& Pipes) {
     int id;
-    cout << "Âñå òðóáû: " << endl;
+    cout << "Ð’ÑÐµ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << endl;
     view_objects(Pipes, show_Pipe);
-    cout << "Ââåäèòå ID òðóáû, êîòîðóþ âû õîòèòå îòðåäàêòèðîâàòü: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ID Ñ‚Ñ€ÑƒÐ±Ñ‹, ÐºÐ¾Ñ‚Ð¾Ñ€ÑƒÑŽ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: ";
     id = check<int>(0, INT_MAX);
     auto it = Pipes.find(id);
     if (it != Pipes.end()) {
@@ -72,36 +72,36 @@ void edit_single_pipe(unordered_map<int, Pipe>& Pipes) {
         if (P.diameter > 0) {
             int m;
             while (true) {
-                cout << "Âûáåðèòå ïàðàìåòð, êîòîðûé âû õîòèòå îòðåäàêòèðîâàòü: " << endl << "1) Ñòàòóñ 'â ðåìîíòå'" << endl<< "0) Âûõîä â ìåíþ" << endl<< "Íîìåð êîìàíäû: ";
+                cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl << "1) Ð¡Ñ‚Ð°Ñ‚ÑƒÑ 'Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ'" << endl<< "0) Ð’Ñ‹Ñ…Ð¾Ð´ Ð² Ð¼ÐµÐ½ÑŽ" << endl<< "ÐÐ¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
                 m = check<int>(0, 1);
                 if (m == 0) {
                     break;
                 }
                 if (m == 1) {
-                    cout << "Ñòàðûé ñòàòóñ òðóáû: â ðåìîíòå " << boolalpha << P.repair << endl << "Âûáåðèòå íîâûé ñòàòóñ òðóáû: " << endl<< "0) Íå â ðåìîíòå" << endl<< "1) Â ðåìîíòå" << endl<< "Ââåäèòå íîìåð êîìàíäû: ";
+                    cout << "Ð¡Ñ‚Ð°Ñ€Ñ‹Ð¹ ÑÑ‚Ð°Ñ‚ÑƒÑ Ñ‚Ñ€ÑƒÐ±Ñ‹: Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ " << boolalpha << P.repair << endl << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ñ‹Ð¹ ÑÑ‚Ð°Ñ‚ÑƒÑ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << endl<< "0) ÐÐµ Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl<< "1) Ð’ Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl<< "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
                     P.repair = check<int>(0, 1);
                 }
             }
         }
     }
     else {
-        cout << "Òðóáà ñ òàêèì ID íå íàéäåíà!" << endl;
+        cout << "Ð¢Ñ€ÑƒÐ±Ð° Ñ Ñ‚Ð°ÐºÐ¸Ð¼ ID Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð°!" << endl;
     }
 }
 
 void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe) {
     int m, repair;
     if (!filt_keys_Pipe.empty()) {
-        cout << "Âñå îòôèëüòðîâàííûå òðóáû: " << endl;
+        cout << "Ð’ÑÐµ Ð¾Ñ‚Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ðµ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << endl;
         view_objects_vector(filt_keys_Pipe,Pipes, show_Pipe);
         while (true) {
-            cout << "Âûáåðèòå ïàðàìåòð, êîòîðûé âû õîòèòå îòðåäàêòèðîâàòü: " << endl<< "1) Ñòàòóñ 'â ðåìîíòå'" << endl<< "0) Âûõîä â ìåíþ" << endl<< "Íîìåð êîìàíäû: ";
+            cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl<< "1) Ð¡Ñ‚Ð°Ñ‚ÑƒÑ 'Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ'" << endl<< "0) Ð’Ñ‹Ñ…Ð¾Ð´ Ð² Ð¼ÐµÐ½ÑŽ" << endl<< "ÐÐ¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
             m = check<int>(0, 1);
             if (m == 0) {
                 break;
             }
             if (m == 1) {
-                cout << "Âûáåðèòå íîâûé ñòàòóñ òðóáû: " << endl<< "0) Íå â ðåìîíòå" << endl<< "1) Â ðåìîíòå" << endl<< "Ââåäèòå íîìåð êîìàíäû: ";
+                cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ñ‹Ð¹ ÑÑ‚Ð°Ñ‚ÑƒÑ Ñ‚Ñ€ÑƒÐ±Ñ‹: " << endl<< "0) ÐÐµ Ð² Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl<< "1) Ð’ Ñ€ÐµÐ¼Ð¾Ð½Ñ‚Ðµ" << endl<< "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
                 repair = check<int>(0, 1);
             }
             for (size_t i = 0; i < filt_keys_Pipe.size(); ++i) {
@@ -111,7 +111,7 @@ void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys
         }
     }
     else {
-        cout << "Ôèëüòð åù¸ íå áûë çàäàí" << endl;
+        cout << "Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ ÐµÑ‰Ñ‘ Ð½Ðµ Ð±Ñ‹Ð» Ð·Ð°Ð´Ð°Ð½" << endl;
     }
 }
 
@@ -119,7 +119,7 @@ void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys
 void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe) {
     int m = 0;
     while (true) {
-        cout << "Âûáåðèòå ÷òî âû õîòèòå îòðåäàêòèðîâàòü: " << endl << "1) Îäíó èç âñåõ òðóá" << endl << "2) Ãðóïïó îòôèëüòðîâàííûõ òðóá" << endl << "0) Âûõîä" << endl;
+        cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‡Ñ‚Ð¾ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl << "1) ÐžÐ´Ð½Ñƒ Ð¸Ð· Ð²ÑÐµÑ… Ñ‚Ñ€ÑƒÐ±" << endl << "2) Ð“Ñ€ÑƒÐ¿Ð¿Ñƒ Ð¾Ñ‚Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ñ… Ñ‚Ñ€ÑƒÐ±" << endl << "0) Ð’Ñ‹Ñ…Ð¾Ð´" << endl;
         m = check<int>(0, 2);
         if (m == 0) {
             break;
@@ -136,7 +136,7 @@ void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pi
 void load(unordered_map<int, Pipe>& Pipes, int& maxPipeID) {
     ifstream in("datapipecs.txt");
     if (!in.is_open()) {
-        cout << "Ôàéë íå íàéäåí" << endl;
+        cout << "Ð¤Ð°Ð¹Ð» Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½" << endl;
         return;
     }
     Pipes.clear();
@@ -147,6 +147,6 @@ void load(unordered_map<int, Pipe>& Pipes, int& maxPipeID) {
         }
     }
     if (!Pipes.empty()) {
-        cout << "Äàííûå î òðóáàõ çàãðóæåíû" << endl;
+        cout << "Ð”Ð°Ð½Ð½Ñ‹Ðµ Ð¾ Ñ‚Ñ€ÑƒÐ±Ð°Ñ… Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹" << endl;
     }
 }

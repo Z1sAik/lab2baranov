@@ -22,7 +22,7 @@ void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int&
         int id;
         compressor_station CS;
         while (in >> id) {
-            CS.id = id;
+            CS.id = id; 
             getline(in >> ws, CS.Name);
             in >> CS.workshops >> CS.workshopsinwork >> CS.effectiveness;
             Stations[id] = CS;
@@ -34,19 +34,19 @@ void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int&
 }
 
 void show_cs(const compressor_station& CS) {
-    cout << "ID: " << CS.id << "; Íàçâàíèå ÊÑ: " << CS.Name << "; Êîë-âî öåõîâ: " << CS.workshops << "; Êîë-âî öåõîâ â ðàáîòå: " << CS.workshopsinwork << "; Êîýôôèöèåíò ýôôåêòèâíîñòè ÊÑ: " << CS.effectiveness << endl;
+    cout << "ID: " << CS.id << "; ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ ÐšÐ¡: " << CS.Name << "; ÐšÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð²: " << CS.workshops << "; ÐšÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ: " << CS.workshopsinwork << "; ÐšÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚ ÑÑ„Ñ„ÐµÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ ÐšÐ¡: " << CS.effectiveness << endl;
 }
 
 void menu_new_ks(compressor_station& CS) {
     CS.id = ++CS.maxCSID;
     cout << "ID: " << CS.id << endl;
-    cout << "Ââåäèòå íàçâàíèå êîìïðåññîðíîé ñòàíöèè (íà àíãëèéñêîì ÿçûê): ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ ÐºÐ¾Ð¼Ð¿Ñ€ÐµÑÑÐ¾Ñ€Ð½Ð¾Ð¹ ÑÑ‚Ð°Ð½Ñ†Ð¸Ð¸ (Ð½Ð° Ð°Ð½Ð³Ð»Ð¸Ð¹ÑÐºÐ¾Ð¼ ÑÐ·Ñ‹Ðº): ";
     getline(cin, CS.Name);
-    cout << "Ââåäèòå êîë-âî öåõîâ: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð²: ";
     CS.workshops = check<int>(1, 0);
-    cout << "Ââåäèòå êîë-âî öåõîâ â ðàáîòå: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ: ";
     CS.workshopsinwork = check<int>(0, CS.workshops);
-    cout << "Ââåäèòå êîýôôèöèåíò ýôôåêòèâíîñòè ÊÑ(îò 0 äî 100): ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾ÑÑ„Ñ„Ð¸Ñ†Ð¸ÐµÐ½Ñ‚ ÑÑ„Ñ„ÐµÐºÑ‚Ð¸Ð²Ð½Ð¾ÑÑ‚Ð¸ ÐšÐ¡(Ð¾Ñ‚ 0 Ð´Ð¾ 100): ";
     CS.effectiveness = check<int>(0, 100);
     show_cs(CS);
 }
@@ -63,23 +63,23 @@ void filter_CS(const unordered_map<int, compressor_station>& Stations, string Na
 
 void edit_single_CS(unordered_map<int, compressor_station>& Stations) {
     int m = 0;
-    cout << "Âñå êîìïðåññîðíûå ñòàíöèè: " << endl;
+    cout << "Ð’ÑÐµ ÐºÐ¾Ð¼Ð¿Ñ€ÐµÑÑÐ¾Ñ€Ð½Ñ‹Ðµ ÑÑ‚Ð°Ð½Ñ†Ð¸Ð¸: " << endl;
     view_objects(Stations, show_cs);
-    cout << "Ââåäèòå ID êîìïðåññîðíîé ñòàíöèè, êîòîðóþ âû õîòèòå îòðåäàêòèðîâàòü: ";
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ID ÐºÐ¾Ð¼Ð¿Ñ€ÐµÑÑÐ¾Ñ€Ð½Ð¾Ð¹ ÑÑ‚Ð°Ð½Ñ†Ð¸Ð¸, ÐºÐ¾Ñ‚Ð¾Ñ€ÑƒÑŽ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: ";
     int id = check<int>(0, INT_MAX);
     auto it = Stations.find(id);
     if (it != Stations.end()) {
         compressor_station& CS = it->second;
         if (CS.workshops > 0) {
             while (true) {
-                cout << "Âûáåðèòå ïàðàìåòð, êîòîðûé âû õîòèòå îòðåäàêòèðîâàòü: " << endl<< "1) Êîë-âî öåõîâ â ðàáîòå" << endl<< "0) Âûõîä â ìåíþ" << endl<< "Íîìåð êîìàíäû: ";
+                cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl<< "1) ÐšÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ" << endl<< "0) Ð’Ñ‹Ñ…Ð¾Ð´ Ð² Ð¼ÐµÐ½ÑŽ" << endl<< "ÐÐ¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
                 m = check<int>(0, 1);
                 if (m == 0) {
                     break;
                 }
                 if (m == 1) {
-                    cout << "Ñòàðîå êîë-âî öåõîâ â ðàáîòå: " << CS.workshopsinwork << endl
-                        << "Ââåäèòå íîâîå êîë-âî öåõîâ â ðàáîòå: ";
+                    cout << "Ð¡Ñ‚Ð°Ñ€Ð¾Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ: " << CS.workshopsinwork << endl
+                        << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ð¾Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ: ";
                     int workshopsinwork = check<int>(0, CS.workshops);
                     CS.workshopsinwork = workshopsinwork;
                 }
@@ -87,23 +87,23 @@ void edit_single_CS(unordered_map<int, compressor_station>& Stations) {
         }
     }
     else {
-        cout << "Êîìïðåññîðíàÿ ñòàíöèÿ ñ òàêèì ID íå íàéäåíà!" << endl;
+        cout << "ÐšÐ¾Ð¼Ð¿Ñ€ÐµÑÑÐ¾Ñ€Ð½Ð°Ñ ÑÑ‚Ð°Ð½Ñ†Ð¸Ñ Ñ Ñ‚Ð°ÐºÐ¸Ð¼ ID Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½Ð°!" << endl;
     }
 }
 
 void edit_filtered_CS(unordered_map<int, compressor_station>& Stations, vector<int> filt_keys_CS) {
     int m = 0;
     if (!filt_keys_CS.empty()) {
-        cout << "Âñå îòôèëüòðîâàííûå êîìïðåññîðíûå ñòàíöèè: " << endl;
+        cout << "Ð’ÑÐµ Ð¾Ñ‚Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ðµ ÐºÐ¾Ð¼Ð¿Ñ€ÐµÑÑÐ¾Ñ€Ð½Ñ‹Ðµ ÑÑ‚Ð°Ð½Ñ†Ð¸Ð¸: " << endl;
         view_objects_vector(filt_keys_CS, Stations, show_cs);
         while (true) {
-            cout << "Âûáåðèòå ïàðàìåòð, êîòîðûé âû õîòèòå îòðåäàêòèðîâàòü: " << endl<< "1) Êîë-âî öåõîâ â ðàáîòå" << endl<< "0) Âûõîä â ìåíþ" << endl<< "Íîìåð êîìàíäû: ";
+            cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl<< "1) ÐšÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ" << endl<< "0) Ð’Ñ‹Ñ…Ð¾Ð´ Ð² Ð¼ÐµÐ½ÑŽ" << endl<< "ÐÐ¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
             m = check<int>(0, 1);
             if (m == 0) {
                 break;
             }
             if (m == 1) {
-                cout << "Ââåäèòå íîâîå êîë-âî öåõîâ â ðàáîòå: ";
+                cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð²Ð¾Ðµ ÐºÐ¾Ð»-Ð²Ð¾ Ñ†ÐµÑ…Ð¾Ð² Ð² Ñ€Ð°Ð±Ð¾Ñ‚Ðµ: ";
                 int workshopsinwork = check<int>(0, INT_MAX);
                 for (size_t i = 0; i < filt_keys_CS.size(); ++i) {
                     auto it = Stations.find(filt_keys_CS[i]);
@@ -113,7 +113,7 @@ void edit_filtered_CS(unordered_map<int, compressor_station>& Stations, vector<i
         }
     }
     else {
-        cout << "Ôèëüòð åù¸ íå áûë çàäàí" << endl;
+        cout << "Ð¤Ð¸Ð»ÑŒÑ‚Ñ€ ÐµÑ‰Ñ‘ Ð½Ðµ Ð±Ñ‹Ð» Ð·Ð°Ð´Ð°Ð½" << endl;
     }
 }
 
@@ -121,7 +121,7 @@ void edit_filtered_CS(unordered_map<int, compressor_station>& Stations, vector<i
 void edit_CS_filter(unordered_map<int, compressor_station>& Stations, vector<int> filt_keys_CS) {
     int m = 0;
     while (true) {
-        cout << "Âûáåðèòå ÷òî âû õîòèòå îòðåäàêòèðîâàòü: " << endl << "1) Îäíó èç âñåõ ÊÑ" << endl << "2) Ãðóïïó îòôèëüòðîâàííûõ ÊÑ" << endl << "0) Âûõîä" << endl;
+        cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‡Ñ‚Ð¾ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ: " << endl << "1) ÐžÐ´Ð½Ñƒ Ð¸Ð· Ð²ÑÐµÑ… ÐšÐ¡" << endl << "2) Ð“Ñ€ÑƒÐ¿Ð¿Ñƒ Ð¾Ñ‚Ñ„Ð¸Ð»ÑŒÑ‚Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ñ… ÐšÐ¡" << endl << "0) Ð’Ñ‹Ñ…Ð¾Ð´" << endl;
         m = check<int>(0, 2);
         if (m == 0) {
             break;
@@ -138,7 +138,7 @@ void edit_CS_filter(unordered_map<int, compressor_station>& Stations, vector<int
 void load2(unordered_map<int, compressor_station>& Stations, int& maxCSID) {
     ifstream in("datapipecs.txt");
     if (!in.is_open()) {
-        cout << "Ôàéë íå íàéäåí" << endl;
+        cout << "Ð¤Ð°Ð¹Ð» Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½" << endl;
         return;
     }
     Stations.clear();
@@ -149,6 +149,6 @@ void load2(unordered_map<int, compressor_station>& Stations, int& maxCSID) {
         }
     }
     if (!Stations.empty()) {
-        cout << "Äàííûå î ÊÑ çàãðóæåíû" << endl;
+        cout << "Ð”Ð°Ð½Ð½Ñ‹Ðµ Ð¾ ÐšÐ¡ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹" << endl;
     }
 }

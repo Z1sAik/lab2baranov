@@ -4,7 +4,7 @@
 #include <fstream>
 #include <unordered_map>
 using namespace std;
-class compressor_station
+class compressor_station 
 {
 public:
     int id;

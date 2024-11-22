@@ -11,13 +11,13 @@ class Pipe
 public:
     int id;
     static int maxPipeID;
-    string Name; //название трубы
-    float length; //километры 
-    int diameter; //миллиметры
-    bool repair; //признак "в ремонте"
+    string Name; //РЅР°Р·РІР°РЅРёРµ С‚СЂСѓР±С‹
+    float length; //РєРёР»РѕРјРµС‚СЂС‹ 
+    int diameter; //РјРёР»Р»РёРјРµС‚СЂС‹
+    bool repair; //РїСЂРёР·РЅР°Рє "РІ СЂРµРјРѕРЅС‚Рµ"
 
     Pipe() : id(0), Name(""), length(0.0f), diameter(0), repair(false) {
-    }
+    } 
 
     Pipe(int P_id, string P_Name, float P_length, int P_diameter, bool P_repair){
         id = P_id;
