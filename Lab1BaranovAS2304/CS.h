@@ -9,10 +9,10 @@ class compressor_station
 public:
     int id;
     static int maxCSID;
-    string Name; //название КС
-    int workshops; //Кол-во цехов
-    int workshopsinwork; //Кол-во цехов в работе
-    int effectiveness; //Коэфф. эффективности
+    string Name; //РЅР°Р·РІР°РЅРёРµ РљРЎ
+    int workshops; //РљРѕР»-РІРѕ С†РµС…РѕРІ
+    int workshopsinwork; //РљРѕР»-РІРѕ С†РµС…РѕРІ РІ СЂР°Р±РѕС‚Рµ
+    int effectiveness; //РљРѕСЌС„С„. СЌС„С„РµРєС‚РёРІРЅРѕСЃС‚Рё
     compressor_station() :id(0), Name(""), workshops(), workshopsinwork(), effectiveness() {
     }
     compressor_station(int CS_id, string CS_Name, int CS_workshops, int CS_workshopsinwork, int CS_effectiveness) {
