@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -28,7 +28,7 @@ public:
     {
         return id;
     }
-
+    
 };
 void SaveCS(int CSID, const compressor_station& CS, ofstream& out);
 void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int& maxCSID);

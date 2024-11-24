@@ -1,4 +1,4 @@
-#include "functions.h"
+﻿#include "functions.h"
 #include "CS.h"
 #include "Pipe.h"
 #include <iostream>

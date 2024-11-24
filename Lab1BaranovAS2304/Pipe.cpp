@@ -1,4 +1,4 @@
-#include "functions.h"
+﻿#include "functions.h"
 #include "Pipe.h"
 #include <iostream>
 #include <unordered_map>
