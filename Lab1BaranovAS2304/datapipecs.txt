@@ -1,14 +1,16 @@
 data Pipe:
 1
-Msda
-213 1 1
+Mt das
+123 1 0
 2
-MSasd
-1 1 0
+Msad
+12 1 0
+end
 data CS:
 1
-MSAd
-2 1 0
+Mt a2
+12 10 10
 2
-SADq
-1 1 0
+Mrasd
+21 10 100
+end

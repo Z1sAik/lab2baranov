@@ -29,6 +29,7 @@ void loadPipe(unordered_map<int, Pipe>& Pipes, ifstream& in, int& maxPipeID) {
                 maxPipeID = id;
             }
         }
+        in.clear();
     }
 }
 
@@ -130,23 +131,5 @@ void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pi
         if (m == 2) {
             edit_filtered_pipes(Pipes, filt_keys_Pipe);
         }
-    }
-}
-
-void load(unordered_map<int, Pipe>& Pipes, int& maxPipeID) {
-    ifstream in("datapipecs.txt");
-    if (!in.is_open()) {
-        cout << "Файл не найден" << endl;
-        return;
-    }
-    Pipes.clear();
-    string line;
-    while (getline(in >> ws, line)) {
-        if (line == "data Pipe:") {
-            loadPipe(Pipes, in, maxPipeID);
-        }
-    }
-    if (!Pipes.empty()) {
-        cout << "Данные о трубах загружены" << endl;
     }
 }

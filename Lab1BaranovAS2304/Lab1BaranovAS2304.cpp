@@ -11,8 +11,6 @@ int main() {
     vector<int> filt_keys_Pipe;
     vector<int> filt_keys_CS;
     setlocale(LC_ALL, "RU"); 
-    Pipe P;
-    compressor_station CS;
     unordered_map<int, Pipe> Pipes = {};
     unordered_map<int, compressor_station> Stations = {};
     while (true) {
@@ -21,10 +19,12 @@ int main() {
             break;
         }
         else if (k == 1) {
+            Pipe P;
             menu_new_Pipe(P);
             Pipes.insert({P.getID(),P});
         }
         else if (k == 2) {
+            compressor_station CS;
             menu_new_ks(CS);
             Stations.insert({CS.getID(),CS});
         }
@@ -44,8 +44,7 @@ int main() {
             save(Pipes, Stations);
         }
         else if (k == 8) {
-            load(Pipes, Pipe::maxPipeID);
-            load2(Stations, compressor_station::maxCSID);
+            load(Pipes, Stations, Pipe::maxPipeID, compressor_station::maxCSID);
         }
     }
     return 0;

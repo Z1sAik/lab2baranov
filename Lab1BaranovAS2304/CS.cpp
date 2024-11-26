@@ -30,6 +30,7 @@ void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int&
                 maxCSID = id;
             }
         }
+        in.clear();
     }
 }
 
@@ -132,23 +133,5 @@ void edit_CS_filter(unordered_map<int, compressor_station>& Stations, vector<int
         if (m == 2) {
             edit_filtered_CS(Stations,filt_keys_CS);
         }
-    }
-}
-
-void load2(unordered_map<int, compressor_station>& Stations, int& maxCSID) {
-    ifstream in("datapipecs.txt");
-    if (!in.is_open()) {
-        cout << "Файл не найден" << endl;
-        return;
-    }
-    Stations.clear();
-    string line2;
-    while (getline(in >> ws, line2)) {
-        if (line2 == "data CS:") {
-            loadCS(Stations, in, maxCSID);
-        }
-    }
-    if (!Stations.empty()) {
-        cout << "Данные о КС загружены" << endl;
     }
 }

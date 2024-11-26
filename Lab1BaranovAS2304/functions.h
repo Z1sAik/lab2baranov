@@ -143,8 +143,7 @@ void edit_single_object(unordered_map<int, T>& objects, const string& objectType
 int menu();
 
 void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
-void load(unordered_map<int, Pipe>& Pipes, int& maxPipeID);
-void load2(unordered_map<int, compressor_station>& Stations, int& maxCSID);
 void setFilterParams(string& Name_Filter, int& Status_Filter, const string& ObjectType);
 void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS);
 void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS);
+void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations, int& maxPipeID, int& maxCSID);

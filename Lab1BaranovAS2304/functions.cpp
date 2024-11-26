@@ -39,10 +39,12 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
         for (auto& pair : Pipes) {
             SavePipe(pair.first, pair.second, out);
         }
+        out << "end data" << endl;
         out << "data CS:" << endl;
         for (auto& pair : Stations) {
             SaveCS(pair.first, pair.second, out);
         }
+        out << "end data" << endl;
         cout << "Данные сохранены!" << endl;
     }
     out.close();
@@ -134,4 +136,26 @@ void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, co
             objects_empty_vector(filt_keys_Pipe, filt_keys_CS);
         }
     } 
+}
+
+void load(unordered_map<int, Pipe>& Pipes, unordered_map<int,compressor_station>& Stations, int& maxPipeID, int& maxCSID) {
+    ifstream in("datapipecs.txt");
+    if (!in.is_open()) {
+        cout << "Файл не найден" << endl;
+        return;
+    }
+    Stations.clear();
+    Pipes.clear();
+    string line;
+    while (getline(in >> ws, line)) {
+        if (line == "data Pipe:") {
+            loadPipe(Pipes, in, maxPipeID);
+        }
+        if (line == "data CS:") {
+            loadCS(Stations, in, maxCSID);
+        }
+    }
+    if (!Pipes.empty() || !Stations.empty()) {
+        cout << "Данные загружены" << endl;
+    }
 }
