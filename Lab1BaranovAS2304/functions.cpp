@@ -51,55 +51,83 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
 }
 
 void setFilterParams(string& Name_Filter, int& Status_Filter, const string& ObjectType) {
-    int m = 0;
     while (true) {
-        cout << "Какой фильтр для " << ObjectType << " вы хотите задать:" << endl << "1) По имени (" << (!Name_Filter.empty() ? "Заполнен" : "Не заполнен") << ")" << endl << "2) По статусу (" << (Status_Filter != -1 && Status_Filter != -2 ? "Заполнен" : "Не заполнен") << ")" << endl << "3) Сбросить фильтр" << endl << "0) Выход" << endl;
-        m = check<int>(0, 3);
+        cout << "Выберите фильтр для " << ObjectType << ":" << endl;
+        cout << "1) По имени (" << (!Name_Filter.empty() ? "Заполнен" : "Не заполнен") << ")" << endl;
+        cout << "2) По статусу (" << (Status_Filter >= 0 ? "Заполнен" : "Не заполнен") << ")" << endl;
+        cout << "3) Сбросить фильтры" << endl;
+        cout << "0) Выход" << endl;
+        int m = check<int>(0, 3);
+        if (m == 1) {
+            cout << "Введите имя для фильтрации: ";
+            get_line(Name_Filter);
+        }
+        if (m == 2) {
+            if (ObjectType == "трубы") {
+                cout << "Введите статус для фильтрации (0 = Не в ремонте, 1 = В ремонте): ";
+                Status_Filter = check<int>(0, 1);
+            }
+            else {
+                cout << "Введите процент нерабочих цехов для фильтрации (0–100): ";
+                Status_Filter = check<int>(0, 100);
+            }
+        }
+        if (m == 3) {
+            Name_Filter = "";
+            Status_Filter = (ObjectType == "трубы" ? -1 : -2);
+            cout << "Фильтры для " << ObjectType << " сброшены." << endl;
+        }
         if (m == 0) {
             break;
         }
-        if (m == 1) {
-            cout << "Введите имя по которому вы будете фильтровать " << ObjectType << ": ";
-            getline(cin, Name_Filter);
-        }
-        else if (m == 2) {
-            cout << "Введите статус для фильтрации (" << (ObjectType == "трубы" ? "0 = Не в ремонте, 1 = В ремонте" : "Введите процент цехов, не в работе") << "): ";
-            Status_Filter = check<int>(0, (ObjectType == "трубы" ? 1 : 100));
-        }
-        else if (m == 3) {
-            if (ObjectType == "труба") {
-                Name_Filter = "";
-                Status_Filter = -1;
-                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
-            }
-            else {
-                Name_Filter = "";
-                Status_Filter = -2;
-                cout << "Фильтр для " << ObjectType << " сброшен!" << endl;
-            }
-        }
-    }
+    }    
 }
 
-void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe,vector<int>& filt_keys_CS) {
+bool filterByNameP(const Pipe& pipe, string& name) {
+    return pipe.Name == name;
+}
+
+bool filterByRepairP(const Pipe& pipe, int& repair) {
+    return pipe.repair == repair;
+}
+
+bool filterByNameCS(const compressor_station& cs, string& name) {
+    return cs.Name == name;
+}
+
+bool filterByWork(const compressor_station& cs, int& work) {
+    return cs.workshopsinwork == work;
+}
+
+
+void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS) {
     string Name_P = "";
     int Repair_P = -1;
     string Name_CS = "";
     int work_CS = -2;
     int m = 0;
     while (true) {
-        cout << "Выберите, для какого объекта вы хотите задать фильтры:" << endl << "1) Фильтр для трубы" << endl << "2) Фильтр для КС"<< endl << "0) Выход" << endl;
+        cout << "Выберите, для какого объекта вы хотите задать фильтры:" << endl<< "1) Фильтр для трубы" << endl<< "2) Фильтр для КС" << endl<< "0) Выход" << endl;
         m = check<int>(0, 2);
-
         if (m == 1) {
             setFilterParams(Name_P, Repair_P, "трубы");
+            if (!Name_P.empty()) {
+                Filter_map(Pipes,filterByNameP, Name_P, filt_keys_Pipe);
+            }
+            if (Repair_P != -1) {
+                Filter_map(Pipes, filterByRepairP, Repair_P, filt_keys_Pipe);
+            }
         }
         else if (m == 2) {
             setFilterParams(Name_CS, work_CS, "КС");
+            if (!Name_CS.empty()) {
+                Filter_map(Stations,filterByNameCS, Name_CS, filt_keys_CS);
+            }
+            if (work_CS != -2) {
+                Filter_map(Stations, filterByWork, work_CS, filt_keys_CS);
+            }
         }
         else if (m == 0) {
-            filter_P(Pipes, Name_P, Repair_P, filt_keys_Pipe);
-            filter_CS(Stations, Name_CS, work_CS, filt_keys_CS);
             break;
         }
     }
@@ -158,4 +186,16 @@ void load(unordered_map<int, Pipe>& Pipes, unordered_map<int,compressor_station>
     if (!Pipes.empty() || !Stations.empty()) {
         cout << "Данные загружены" << endl;
     }
+}
+
+void get_line(string& input) {
+    ofstream logFile("input_log.txt", ios::app);
+    if (!logFile) {
+        cerr << "Ошибка открытия файла для записи!" << endl;
+        return;
+    }
+    cout << "Введите строку: ";
+    getline(cin >> ws, input);
+    logFile << input << endl;
+    logFile.close(); 
 }

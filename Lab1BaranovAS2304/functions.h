@@ -8,12 +8,35 @@
 #include <vector>
 using namespace std;
 
+template <typename T, typename Param>
+using Filter = bool(*)(const T&, Param);
+
+bool filterByNameP(const Pipe& pipe,string& name);
+bool filterByRepairP(const Pipe& pipe, int& repair);
+bool filterByNameCS(const compressor_station& cs,string& name);
+bool filterByWork(const compressor_station& cs, int& work);
+
+template <typename T, typename Param>
+void Filter_map(const unordered_map<int, T>& objects, Filter<const T&, Param&> filter, Param param, vector<int>& filteredKeys) {
+    filteredKeys.clear();
+    for (const auto& pair : objects) {
+        if (filter(pair.second, param)) {
+            filteredKeys.push_back(pair.first);
+        }
+    }
+}
 
 template <typename T>
-T check(T low, T max) { 
+T check(T low, T max) {
     T z;
     cin >> z;
     cin.ignore();
+    ofstream logFile("input_log.txt", ios::app);
+    if (!logFile) {
+        cerr << "Ошибка открытия файла для записи!" << endl;
+        return z;
+    }
+
     while (true) {
         if (cin.fail()) {
             cout << "Ошибка. Введено не целое число или символ! Попробуйте ещё раз: ";
@@ -31,7 +54,10 @@ T check(T low, T max) {
         }
         cin >> z;
         cin.ignore();
+        
     }
+    logFile << z << endl;
+    logFile.close(); 
     return z;
 }
 
@@ -87,63 +113,10 @@ void view_objects_vector(const vector<int>& objects, const unordered_map<int, T>
         }
     }
 }
-/*template <typename T>
-void edit_single_object(unordered_map<int, T>& objects, const string& objectType) {
-    int m = 0;
-    cout << "Все " << objectType << ": " << endl;
-
-    if (objectType == "Трубы") {
-        view_objects(objects, show_Pipe);
-    }
-    else if (objectType == "Компрессорные станции") {
-        view_objects(objects, show_cs);
-    }
-
-    cout << "Введите ID " << objectType << ", который вы хотите отредактировать: ";
-    int id = check<int>(0, INT_MAX);
-
-    auto it = objects.find(id);
-    if (it != objects.end()) {
-        T& obj = it->second;
-        while (true) {
-            cout << "Выберите параметр, который вы хотите отредактировать: " << endl;
-            if (objectType == "Трубы") {
-                cout << "1) Статус трубы 'в ремонте'" << endl;
-            }
-            else if (objectType == "Компрессорные станции") {
-                cout << "1) Кол-во цехов в работе" << endl;
-            }
-            cout << "0) Выход в меню" << endl << "Номер команды: ";
-            m = check<int>(0, 1);
-
-            if (m == 0) {
-                break;
-            }
-            if (m == 1) {
-                if (objectType == "Трубы") {
-                    cout << "Старый статус трубы: " << boolalpha << it->second.repair << endl;
-                    cout << "Введите новый статус трубы (0 - не в ремонте, 1 - в ремонте): ";
-                    it->second.repair = check<int>(0, 1);
-                }
-                else if (objectType == "Компрессорные станции") {
-                    cout << "Старое кол-во цехов в работе: " << it->second.workshopsinwork << endl;
-                    cout << "Введите новое кол-во цехов в работе: ";
-                    int workshopsinwork = check<int>(0, it->second.workshops);
-                    it->second.workshopsinwork = workshopsinwork;
-                }
-            }
-        }
-    }
-    else {
-        cout << objectType << " с таким ID не найдена!" << endl;
-    }
-}*/
-
 
 int menu();
-
 void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
-void setFilterParams(string& Name_Filter, int& Status_Filter, const string& ObjectType);
 void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS);
 void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS);
 void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations, int& maxPipeID, int& maxCSID);
+void get_line(string& input);

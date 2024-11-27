@@ -42,7 +42,7 @@ void menu_new_ks(compressor_station& CS) {
     CS.id = ++CS.maxCSID;
     cout << "ID: " << CS.id << endl;
     cout << "Введите название компрессорной станции (на английском язык): ";
-    getline(cin, CS.Name);
+    get_line(CS.Name);
     cout << "Введите кол-во цехов: ";
     CS.workshops = check<int>(1, 0);
     cout << "Введите кол-во цехов в работе: ";

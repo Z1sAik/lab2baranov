@@ -38,4 +38,3 @@ void edit_CS_filter(unordered_map<int, compressor_station>& Stations, vector<int
 void filter_CS(const unordered_map<int, compressor_station>& Stations, string Name_def, int work, vector<int>& filt_keys);
 void menu_new_ks(compressor_station& CS);
 void show_cs(const compressor_station& CS);
-void load2(unordered_map<int, compressor_station>& Stations, int& maxCSID);

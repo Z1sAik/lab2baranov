@@ -41,7 +41,7 @@ void menu_new_Pipe(Pipe& P) {
     P.id = ++P.maxPipeID;
     cout << "ID: " << P.id << endl;
     cout << "Введите название трубы (на английском язык): ";
-    getline(cin, P.Name);
+    get_line(P.Name);
     cout << "Введите длину трубы в километрах: ";
     P.length = check<float>(0.1, 0);
     cout << "Введите диаметр трубы в миллиметрах: ";
@@ -104,10 +104,10 @@ void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys
             if (m == 1) {
                 cout << "Выберите новый статус трубы: " << endl<< "0) Не в ремонте" << endl<< "1) В ремонте" << endl<< "Введите номер команды: ";
                 repair = check<int>(0, 1);
-            }
-            for (size_t i = 0; i < filt_keys_Pipe.size(); ++i) {
-                auto it = Pipes.find(filt_keys_Pipe[i]);
-                it->second.repair = repair;
+                for (size_t i = 0; i < filt_keys_Pipe.size(); ++i) {
+                    auto it = Pipes.find(filt_keys_Pipe[i]);
+                    it->second.repair = repair;
+                }
             }
         }
     }

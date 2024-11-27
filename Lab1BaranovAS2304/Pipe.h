@@ -42,4 +42,3 @@ void show_Pipe(const Pipe& P);
 void edit_single_pipe(unordered_map<int, Pipe>& Pipes);
 void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe);
 void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe);
-void load(unordered_map<int, Pipe>& Pipes, int& maxPipeID);
