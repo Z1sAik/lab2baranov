@@ -5,7 +5,7 @@ Mt das
 2
 Msad
 12 1 0
-end
+end data
 data CS:
 1
 Mt a2
@@ -13,4 +13,4 @@ Mt a2
 2
 Mrasd
 21 10 100
-end
+end data

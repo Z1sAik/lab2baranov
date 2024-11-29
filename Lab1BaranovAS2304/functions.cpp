@@ -5,9 +5,11 @@
 #include <unordered_map>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
+ofstream logFile;
 
 int menu() {
     int k = -1;
@@ -30,10 +32,13 @@ int menu() {
 
 
 void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations) {
+    string filename;
+    cout << "Введите имя файла для сохранения: ";
+    get_line(filename);
+
     ofstream out;
-    out.open("datapipecs.txt");
-    if (out.is_open())
-    {
+    out.open(filename);
+    if (out.is_open()) {
         objects_empty(Pipes, Stations);
         out << "data Pipe:" << endl;
         for (auto& pair : Pipes) {
@@ -45,7 +50,10 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
             SaveCS(pair.first, pair.second, out);
         }
         out << "end data" << endl;
-        cout << "Данные сохранены!" << endl;
+        cout << "Данные сохранены в файл: " << filename << endl;
+    }
+    else {
+        cout << "Ошибка при открытии файла для записи!" << endl;
     }
     out.close();
 }
@@ -166,12 +174,21 @@ void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, co
     } 
 }
 
-void load(unordered_map<int, Pipe>& Pipes, unordered_map<int,compressor_station>& Stations, int& maxPipeID, int& maxCSID) {
-    ifstream in("datapipecs.txt");
+void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations, int& maxPipeID, int& maxCSID) {
+    string filename;
+    cout << "Введите имя файла для загрузки: ";
+    get_line(filename);
+
+    if (filename.find(".txt") == string::npos) {
+        filename += ".txt";
+    }
+
+    ifstream in(filename);
     if (!in.is_open()) {
-        cout << "Файл не найден" << endl;
+        cout << "Файл " << filename << " не найден!" << endl;
         return;
     }
+
     Stations.clear();
     Pipes.clear();
     string line;
@@ -184,18 +201,34 @@ void load(unordered_map<int, Pipe>& Pipes, unordered_map<int,compressor_station>
         }
     }
     if (!Pipes.empty() || !Stations.empty()) {
-        cout << "Данные загружены" << endl;
+        cout << "Данные загружены из файла: " << filename << endl;
     }
+
+    in.close();
 }
 
 void get_line(string& input) {
-    ofstream logFile("input_log.txt", ios::app);
     if (!logFile) {
-        cerr << "Ошибка открытия файла для записи!" << endl;
+        cerr << "Ошибка: файл не открыт для записи!" << endl;
         return;
     }
-    cout << "Введите строку: ";
     getline(cin >> ws, input);
     logFile << input << endl;
-    logFile.close(); 
+}
+
+string generate_filename() {
+    time_t now = time(nullptr);
+    tm localTime;
+    localtime_s(&localTime, &now);
+
+    stringstream ss;
+    ss << "log_"
+        << localTime.tm_year + 1900 << "-"
+        << localTime.tm_mon + 1 << "-"
+        << localTime.tm_mday << "_"
+        << localTime.tm_hour << "-"
+        << localTime.tm_min << "-"
+        << localTime.tm_sec << ".txt";
+
+    return ss.str();
 }

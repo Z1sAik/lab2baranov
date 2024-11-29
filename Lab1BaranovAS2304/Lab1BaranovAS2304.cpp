@@ -8,6 +8,12 @@
 using namespace std;
 
 int main() {
+    string filename = generate_filename();
+    logFile.open(filename, std::ios::app);
+    if (!logFile) {
+        std::cerr << "Ошибка открытия файла для записи!" << std::endl;
+        return 1;
+    }
     vector<int> filt_keys_Pipe;
     vector<int> filt_keys_CS;
     setlocale(LC_ALL, "RU"); 
@@ -47,5 +53,6 @@ int main() {
             load(Pipes, Stations, Pipe::maxPipeID, compressor_station::maxCSID);
         }
     }
+    logFile.close();
     return 0;
 }

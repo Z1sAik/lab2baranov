@@ -6,7 +6,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
 using namespace std;
+
+extern ofstream logFile;
 
 template <typename T, typename Param>
 using Filter = bool(*)(const T&, Param);
@@ -31,9 +34,9 @@ T check(T low, T max) {
     T z;
     cin >> z;
     cin.ignore();
-    ofstream logFile("input_log.txt", ios::app);
+
     if (!logFile) {
-        cerr << "Ошибка открытия файла для записи!" << endl;
+        cerr << "Ошибка: файл не открыт для записи!" << endl;
         return z;
     }
 
@@ -54,10 +57,9 @@ T check(T low, T max) {
         }
         cin >> z;
         cin.ignore();
-        
     }
+
     logFile << z << endl;
-    logFile.close(); 
     return z;
 }
 
@@ -120,3 +122,4 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
 void view_all(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, compressor_station>& Stations, vector<int>& filt_keys_Pipe, vector<int>& filt_keys_CS);
 void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations, int& maxPipeID, int& maxCSID);
 void get_line(string& input);
+string generate_filename();
