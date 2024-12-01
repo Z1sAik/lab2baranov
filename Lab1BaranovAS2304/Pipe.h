@@ -39,6 +39,4 @@ void loadPipe(unordered_map<int, Pipe>& pipes, ifstream& in, int& maxPipeID);
 void filter_P(const unordered_map<int, Pipe>& Pipes, string Name_def, int rep_def, vector<int>& filt_keys);
 void menu_new_Pipe(Pipe& P);
 void show_Pipe(const Pipe& P);
-void edit_single_pipe(unordered_map<int, Pipe>& Pipes);
-void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe);
-void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe);
+int edit_single_Pipe(unordered_map<int, Pipe>& Pipes, int id, int repair);

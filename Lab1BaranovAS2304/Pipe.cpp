@@ -61,75 +61,21 @@ void filter_P(const unordered_map<int, Pipe>& Pipes, string Name_def, int rep_de
     }
 }
 
-void edit_single_pipe(unordered_map<int, Pipe>& Pipes) {
-    int id;
-    cout << "Все трубы: " << endl;
-    view_objects(Pipes, show_Pipe);
-    cout << "Введите ID трубы, которую вы хотите отредактировать: ";
-    id = check<int>(0, INT_MAX);
+int edit_single_Pipe(unordered_map<int, Pipe>& Pipes, int id, int repair) {
     auto it = Pipes.find(id);
     if (it != Pipes.end()) {
         Pipe& P = it->second;
-        if (P.diameter > 0) {
-            int m;
-            while (true) {
-                cout << "Выберите параметр, который вы хотите отредактировать: " << endl << "1) Статус 'в ремонте'" << endl<< "0) Выход в меню" << endl<< "Номер команды: ";
-                m = check<int>(0, 1);
-                if (m == 0) {
-                    break;
-                }
-                if (m == 1) {
-                    cout << "Старый статус трубы: в ремонте " << boolalpha << P.repair << endl << "Выберите новый статус трубы: " << endl<< "0) Не в ремонте" << endl<< "1) В ремонте" << endl<< "Введите номер команды: ";
-                    P.repair = check<int>(0, 1);
-                }
-            }
+        if (repair > 1) {
+            cout << "Неверно введено значение 'в работе!'" << endl;
+            return 0;
+        }
+        else {
+            P.repair = repair;
+            return 1;
         }
     }
     else {
         cout << "Труба с таким ID не найдена!" << endl;
-    }
-}
-
-void edit_filtered_pipes(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe) {
-    int m, repair;
-    if (!filt_keys_Pipe.empty()) {
-        cout << "Все отфильтрованные трубы: " << endl;
-        view_objects_vector(filt_keys_Pipe,Pipes, show_Pipe);
-        while (true) {
-            cout << "Выберите параметр, который вы хотите отредактировать: " << endl<< "1) Статус 'в ремонте'" << endl<< "0) Выход в меню" << endl<< "Номер команды: ";
-            m = check<int>(0, 1);
-            if (m == 0) {
-                break;
-            }
-            if (m == 1) {
-                cout << "Выберите новый статус трубы: " << endl<< "0) Не в ремонте" << endl<< "1) В ремонте" << endl<< "Введите номер команды: ";
-                repair = check<int>(0, 1);
-                for (size_t i = 0; i < filt_keys_Pipe.size(); ++i) {
-                    auto it = Pipes.find(filt_keys_Pipe[i]);
-                    it->second.repair = repair;
-                }
-            }
-        }
-    }
-    else {
-        cout << "Фильтр ещё не был задан" << endl;
-    }
-}
-
-
-void edit_Pipe_filter(unordered_map<int, Pipe>& Pipes, vector<int>& filt_keys_Pipe) {
-    int m = 0;
-    while (true) {
-        cout << "Выберите что вы хотите отредактировать: " << endl << "1) Одну из всех труб" << endl << "2) Группу отфильтрованных труб" << endl << "0) Выход" << endl;
-        m = check<int>(0, 2);
-        if (m == 0) {
-            break;
-        }
-        if (m == 1) {
-            edit_single_pipe(Pipes);
-        }
-        if (m == 2) {
-            edit_filtered_pipes(Pipes, filt_keys_Pipe);
-        }
+        return 0;
     }
 }

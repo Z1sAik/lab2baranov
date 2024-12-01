@@ -41,16 +41,19 @@ int main() {
             view_all(Pipes, Stations, filt_keys_Pipe, filt_keys_CS);
         }
         else if (k == 5) {
-            edit_Pipe_filter(Pipes,filt_keys_Pipe);
+            edit_filtered_objects(Pipes, filt_keys_Pipe,show_Pipe,edit_single_Pipe);
         }
         else if (k == 6) {
-            edit_CS_filter(Stations,filt_keys_CS);
+            edit_filtered_objects(Stations, filt_keys_CS,show_cs,edit_single_CS);
         }
         else if (k == 7) {
             save(Pipes, Stations);
         }
         else if (k == 8) {
             load(Pipes, Stations, Pipe::maxPipeID, compressor_station::maxCSID);
+        }
+        else if (k == 9) {
+            remove_objects(Pipes, Stations, filt_keys_Pipe, filt_keys_CS);
         }
     }
     logFile.close();

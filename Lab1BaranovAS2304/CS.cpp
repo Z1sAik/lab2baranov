@@ -62,76 +62,21 @@ void filter_CS(const unordered_map<int, compressor_station>& Stations, string Na
     }
 }
 
-void edit_single_CS(unordered_map<int, compressor_station>& Stations) {
-    int m = 0;
-    cout << "Все компрессорные станции: " << endl;
-    view_objects(Stations, show_cs);
-    cout << "Введите ID компрессорной станции, которую вы хотите отредактировать: ";
-    int id = check<int>(0, INT_MAX);
+int edit_single_CS(unordered_map<int, compressor_station>& Stations, int id, int workshopsinwork) {
     auto it = Stations.find(id);
     if (it != Stations.end()) {
         compressor_station& CS = it->second;
-        if (CS.workshops > 0) {
-            while (true) {
-                cout << "Выберите параметр, который вы хотите отредактировать: " << endl<< "1) Кол-во цехов в работе" << endl<< "0) Выход в меню" << endl<< "Номер команды: ";
-                m = check<int>(0, 1);
-                if (m == 0) {
-                    break;
-                }
-                if (m == 1) {
-                    cout << "Старое кол-во цехов в работе: " << CS.workshopsinwork << endl
-                        << "Введите новое кол-во цехов в работе: ";
-                    int workshopsinwork = check<int>(0, CS.workshops);
-                    CS.workshopsinwork = workshopsinwork;
-                }
-            }
+        if (workshopsinwork > CS.workshops) {
+            cout << "Количество цехов в работе не может превышать доступное количество цехов. Попробуйте снова." << endl;
+            return 0;
+        }
+        else {
+            CS.workshopsinwork = workshopsinwork;
+            return 1;
         }
     }
     else {
         cout << "Компрессорная станция с таким ID не найдена!" << endl;
-    }
-}
-
-void edit_filtered_CS(unordered_map<int, compressor_station>& Stations, vector<int> filt_keys_CS) {
-    int m = 0;
-    if (!filt_keys_CS.empty()) {
-        cout << "Все отфильтрованные компрессорные станции: " << endl;
-        view_objects_vector(filt_keys_CS, Stations, show_cs);
-        while (true) {
-            cout << "Выберите параметр, который вы хотите отредактировать: " << endl<< "1) Кол-во цехов в работе" << endl<< "0) Выход в меню" << endl<< "Номер команды: ";
-            m = check<int>(0, 1);
-            if (m == 0) {
-                break;
-            }
-            if (m == 1) {
-                cout << "Введите новое кол-во цехов в работе: ";
-                int workshopsinwork = check<int>(0, INT_MAX);
-                for (size_t i = 0; i < filt_keys_CS.size(); ++i) {
-                    auto it = Stations.find(filt_keys_CS[i]);
-                    it->second.workshopsinwork = workshopsinwork;
-                }
-            }
-        }
-    }
-    else {
-        cout << "Фильтр ещё не был задан" << endl;
-    }
-}
-
-
-void edit_CS_filter(unordered_map<int, compressor_station>& Stations, vector<int> filt_keys_CS) {
-    int m = 0;
-    while (true) {
-        cout << "Выберите что вы хотите отредактировать: " << endl << "1) Одну из всех КС" << endl << "2) Группу отфильтрованных КС" << endl << "0) Выход" << endl;
-        m = check<int>(0, 2);
-        if (m == 0) {
-            break;
-        }
-        if (m == 1) {
-            edit_single_CS(Stations);
-        }
-        if (m == 2) {
-            edit_filtered_CS(Stations,filt_keys_CS);
-        }
+        return 0;
     }
 }

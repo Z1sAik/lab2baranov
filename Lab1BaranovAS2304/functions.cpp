@@ -23,9 +23,10 @@ int menu() {
             << "6) Редактировать КС" << endl
             << "7) Сохранить данные" << endl
             << "8) Загрузить данные" << endl
+            << "9) Удаление объектов" << endl
             << "0) Выход" << endl
-            << "Введите команду которую вы бы хотели выполнить(от 0 до 8): ";
-        k = check<int>(0, 8);
+            << "Введите команду которую вы бы хотели выполнить(от 0 до 9): ";
+        k = check<int>(0, 9);
         return k;
     }
 }
@@ -91,19 +92,19 @@ void setFilterParams(string& Name_Filter, int& Status_Filter, const string& Obje
     }    
 }
 
-bool filterByNameP(const Pipe& pipe, string& name) {
-    return pipe.Name == name;
+bool filterByNameP(const Pipe& pipe, string name) {
+    return pipe.Name.find(name) != string::npos;
 }
 
-bool filterByRepairP(const Pipe& pipe, int& repair) {
+bool filterByRepairP(const Pipe& pipe, int repair) {
     return pipe.repair == repair;
 }
 
-bool filterByNameCS(const compressor_station& cs, string& name) {
-    return cs.Name == name;
+bool filterByNameCS(const compressor_station& cs, string name) {
+    return cs.Name.find(name) != string::npos;
 }
 
-bool filterByWork(const compressor_station& cs, int& work) {
+bool filterByWork(const compressor_station& cs, int work) {
     return cs.workshopsinwork == work;
 }
 
@@ -231,4 +232,37 @@ string generate_filename() {
         << localTime.tm_sec << ".txt";
 
     return ss.str();
+}
+
+void remove_objects(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations, vector<int> &filt_keys_Pipe,vector<int>& filt_keys_CS) {
+    int m = 0;
+    while (true) {
+        cout << "Выберите в каком классе вы хотите удалить объект: " << endl << "1)Трубы" << endl << "2)Компрессорные станции" << endl<< "0)Выход" << endl << "Введите команду: ";
+        m = check(0, 2);
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            if (!filt_keys_Pipe.empty()) {
+                vector<int> filt_keys;
+                cout << "Для остановки ввода введите -1 для завершения" << endl;
+                view_objects_vector(filt_keys_Pipe, Pipes, show_Pipe);
+                remove_objects_by_ids(Pipes, filt_keys_Pipe);
+            }
+            else {
+                cout << "Фильтр для труб ещё не был задан" << endl;
+            }
+        }
+        if (m == 2) {
+            if (!filt_keys_CS.empty()) {
+                vector<int> filt_keys;
+                cout << "Для остановки ввода введите -1 для завершения" << endl;
+                view_objects_vector(filt_keys_CS, Stations, show_cs);
+                remove_objects_by_ids(Stations, filt_keys_CS);
+            }
+            else {
+                cout << "Фильтр для КС ещё не был задан" << endl;
+            }
+        }
+    }
 }
