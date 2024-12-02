@@ -55,7 +55,7 @@ void menu_new_ks(compressor_station& CS) {
 void filter_CS(const unordered_map<int, compressor_station>& Stations, string Name_def, int work, vector<int>& filt_keys) {
     for (const auto& pair : Stations) {
         bool name = Name_def.empty() || pair.second.Name == Name_def;
-        bool eff = (work == -1) || ((100 - (float(pair.second.workshopsinwork) / float(pair.second.workshops)) * 100) == work);
+        bool eff = (work == -1) || (int(100 - (float(pair.second.workshopsinwork) / float(pair.second.workshops)) * 100) == work);
         if (name && eff) {
             filt_keys.push_back(pair.first);
         }

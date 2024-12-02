@@ -36,7 +36,7 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
     string filename;
     cout << "Введите имя файла для сохранения: ";
     get_line(filename);
-
+    filename += ".txt";
     ofstream out;
     out.open(filename);
     if (out.is_open()) {
@@ -76,7 +76,7 @@ void setFilterParams(string& Name_Filter, int& Status_Filter, const string& Obje
                 cout << "Введите статус для фильтрации (0 = Не в ремонте, 1 = В ремонте): ";
                 Status_Filter = check<int>(0, 1);
             }
-            else {
+            else{
                 cout << "Введите процент нерабочих цехов для фильтрации (0–100): ";
                 Status_Filter = check<int>(0, 100);
             }
@@ -105,7 +105,9 @@ bool filterByNameCS(const compressor_station& cs, string name) {
 }
 
 bool filterByWork(const compressor_station& cs, int work) {
-    return cs.workshopsinwork == work;
+    if (cs.workshops == 0) return false;
+    float not_working = 100 - (float(cs.workshopsinwork) / float(cs.workshops)) * 100;
+    return int(not_working) == work;
 }
 
 
@@ -126,6 +128,8 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
             if (Repair_P != -1) {
                 Filter_map(Pipes, filterByRepairP, Repair_P, filt_keys_Pipe);
             }
+            cout << "Отфильтрованные трубы:" << endl;
+            view_objects_vector(filt_keys_Pipe, Pipes, show_Pipe);
         }
         else if (m == 2) {
             setFilterParams(Name_CS, work_CS, "КС");
@@ -135,6 +139,8 @@ void filter(const unordered_map<int, Pipe>& Pipes, const unordered_map<int, comp
             if (work_CS != -2) {
                 Filter_map(Stations, filterByWork, work_CS, filt_keys_CS);
             }
+            cout << "Отфильтрованные КС:" << endl;
+            view_objects_vector(filt_keys_CS, Stations, show_cs);
         }
         else if (m == 0) {
             break;
