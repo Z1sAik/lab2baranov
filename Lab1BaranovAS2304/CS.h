@@ -15,7 +15,7 @@ private:
     int effectiveness; //Коэфф. эффективности
 
 public:
-    compressor_station() :id(0), Name(""), workshops(), workshopsinwork(), effectiveness() {
+    compressor_station() :id(0), Name(""), workshops(0), workshopsinwork(0), effectiveness(0) {
     }
     compressor_station(int CS_id, string CS_Name, int CS_workshops, int CS_workshopsinwork, int CS_effectiveness) {
 
@@ -44,11 +44,11 @@ public:
     {
         return Name;
     }
-    float notinwork() {
+    float notinwork() const {
         if (workshops == 0) {
-            return 0;
+            return 0.0f;
         }
-        return (float)(workshops - workshopsinwork) / workshops * 100;
+        return ((float)(workshops - workshopsinwork) / workshops) * 100;
     }
 
 };

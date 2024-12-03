@@ -7,38 +7,30 @@
 
 using namespace std;
 
-int Pipe::maxPipeID = 0;
+int Pipe::maxID = 0;
 
-void SavePipe(int pipeID, const Pipe& P, ofstream& out)
-{
-    out << pipeID << endl;
-    out << P.Name << endl;
-    out << P.length << " " << P.diameter << " " << P.repair << endl;
+std::ostream& operator<<(std::ostream& out, const Pipe& P) {
+    out << "Pipe ID = " << P.id << endl
+        << "Имя: " << P.Name << endl
+        << "Длина: " << P.length << endl
+        << "Диаметр: " << P.diameter << endl
+        << "Efficiency: " << P.repair << endl;
+    return out;
 }
 
-void loadPipe(unordered_map<int, Pipe>& Pipes, ifstream& in, int& maxPipeID) {
-    if (in.is_open()) {
-        int id;
-        Pipe P; 
-        while (in >> id) {
-            P.id = id;
-            getline(in >> ws, P.Name);
-            in >> P.length >> P.diameter >> P.repair;
-            Pipes[id] = P;
-            if (id > maxPipeID) {
-                maxPipeID = id;
-            }
-        }
-        in.clear();
+std::ofstream& operator<<(std::ofstream& fout, const Pipe& P) {
+    if (fout.is_open()) {
+        fout << P.id << endl
+            << P.Name << endl
+            << P.length << endl
+            << P.diameter << endl
+            << P.repair << endl;
     }
+    return fout;
 }
 
-void show_Pipe(const Pipe& P) {
-    cout << "ID: " << P.id << "; Название трубы: " << P.Name << "; Длина трубы: " << P.length << "; Диаметр трубы: " << P.diameter << "; Статус 'в ремонте': " << boolalpha << P.repair << endl;
-}
-
-void menu_new_Pipe(Pipe& P) {
-    P.id = ++P.maxPipeID;
+std::istream& operator>>(std::istream& in, Pipe& P) {
+    cout << "Создание новой трубы" << endl;
     cout << "ID: " << P.id << endl;
     cout << "Введите название трубы (на английском язык): ";
     get_line(P.Name);
@@ -48,34 +40,34 @@ void menu_new_Pipe(Pipe& P) {
     P.diameter = check<int>(1, 0);
     cout << "Выберите в каком состоянии труба: " << endl << "0)Не в ремонте" << endl << "1)В ремонте" << endl;
     P.repair = check<int>(0, 1);
-    show_Pipe(P);
+    return in;
 }
 
-void filter_P(const unordered_map<int, Pipe>& Pipes, string Name_def, int rep_def, vector<int>& filt_keys) {
-    for (const auto& pair : Pipes) {
-        bool name = Name_def.empty() || pair.second.Name == Name_def;
-        bool repair = (rep_def == 3) || (pair.second.repair == rep_def);
-        if (name && repair) {
-            filt_keys.push_back(pair.first);
-        }
+std::ifstream& operator>>(std::ifstream& fin, Pipe& P) {
+    if (fin.is_open()) {
+        fin >> P.id;
+        fin.ignore();
+        getline(fin, P.Name);
+        fin >> P.length;
+        fin >> P.diameter;
+        fin >> P.repair;
     }
+    return fin;
 }
 
-int edit_single_Pipe(unordered_map<int, Pipe>& Pipes, int id, int repair) {
-    auto it = Pipes.find(id);
-    if (it != Pipes.end()) {
-        Pipe& P = it->second;
-        if (repair > 1) {
-            cout << "Неверно введено значение 'в работе!'" << endl;
-            return 0;
-        }
-        else {
-            P.repair = repair;
-            return 1;
-        }
-    }
-    else {
-        cout << "Труба с таким ID не найдена!" << endl;
-        return 0;
-    }
+Pipe Pipe::newPipe()
+{
+    Pipe P;
+    cin >> P;
+    return P;
+}
+
+void Pipe::resetMaxID()
+{
+    maxID = 0;
+}
+
+void Pipe::editPipe()
+{
+    repair = !repair;
 }

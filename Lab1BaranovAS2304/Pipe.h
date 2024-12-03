@@ -9,7 +9,7 @@ class Pipe
 {
 private:
     int id;
-    static int maxPipeID;
+    static int maxID;
     string Name; //название трубы
     float length; //километры 
     int diameter; //миллиметры
@@ -32,11 +32,20 @@ public:
         return id;
     }
     
-};
+    friend ostream& operator << (ostream& out, const Pipe& P);
+    friend istream& operator >> (istream& in, Pipe& P);
+    friend ofstream& operator << (ofstream& fout, const Pipe& P);
+    friend ifstream& operator >> (ifstream& fin, Pipe& P);
+    static void resetMaxID();
+    static Pipe newPipe();
+    void editPipe();
 
-void SavePipe(int id, const Pipe& pipe, ofstream& out);
-void loadPipe(unordered_map<int, Pipe>& pipes, ifstream& in, int& maxPipeID);
-void filter_P(const unordered_map<int, Pipe>& Pipes, string Name_def, int rep_def, vector<int>& filt_keys);
-void menu_new_Pipe(Pipe& P);
-void show_Pipe(const Pipe& P);
-int edit_single_Pipe(unordered_map<int, Pipe>& Pipes, int id, int repair);
+    string getName()
+    {
+        return Name;
+    }
+    bool getRepair()
+    {
+        return repair;
+    }
+};
