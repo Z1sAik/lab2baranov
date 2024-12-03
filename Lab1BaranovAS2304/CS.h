@@ -6,13 +6,15 @@
 using namespace std;
 class compressor_station 
 {
-public:
+private:
     int id;
-    static int maxCSID;
+    static int maxID;
     string Name; //название КС
     int workshops; //Кол-во цехов
     int workshopsinwork; //Кол-во цехов в работе
     int effectiveness; //Коэфф. эффективности
+
+public:
     compressor_station() :id(0), Name(""), workshops(), workshopsinwork(), effectiveness() {
     }
     compressor_station(int CS_id, string CS_Name, int CS_workshops, int CS_workshopsinwork, int CS_effectiveness) {
@@ -23,16 +25,30 @@ public:
         workshopsinwork = CS_workshopsinwork;
         effectiveness = CS_effectiveness;
     }
+    static compressor_station newCS();
+    friend ostream& operator << (ostream& out, const compressor_station& cs);
+    friend istream& operator >> (istream& in, compressor_station& cs);
+    friend ofstream& operator << (ofstream& fout, const compressor_station& cs);
+    friend ifstream& operator >> (ifstream& fin, compressor_station& cs);
+    static void resetMaxID();
+
+    bool runworkshop();
+    bool stopworkshop();
 
     int getID()
     {
         return id;
     }
     
+    string getName()
+    {
+        return Name;
+    }
+    float notinwork() {
+        if (workshops == 0) {
+            return 0;
+        }
+        return (float)(workshops - workshopsinwork) / workshops * 100;
+    }
+
 };
-void SaveCS(int CSID, const compressor_station& CS, ofstream& out);
-void loadCS(unordered_map<int, compressor_station>& Stations, ifstream& in, int& maxCSID);
-void filter_CS(const unordered_map<int, compressor_station>& Stations, string Name_def, int work, vector<int>& filt_keys);
-void menu_new_ks(compressor_station& CS);
-void show_cs(const compressor_station& CS);
-int edit_single_CS(unordered_map<int, compressor_station>& Stations, int id, int workshopsinwork);

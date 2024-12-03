@@ -2,13 +2,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <unordered_map>
 
 using namespace std;
 
 class Pipe
 {
-public:
+private:
     int id;
     static int maxPipeID;
     string Name; //название трубы
@@ -16,6 +15,7 @@ public:
     int diameter; //миллиметры
     bool repair; //признак "в ремонте"
 
+public:
     Pipe() : id(0), Name(""), length(0.0f), diameter(0), repair(false) {
     } 
 
