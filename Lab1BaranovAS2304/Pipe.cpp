@@ -70,3 +70,39 @@ void Pipe::editPipe()
 {
     repair = !repair;
 }
+
+unordered_set<int> selectByChosenFilter(unordered_map<int, Pipe>& Pipes) {
+    unordered_set<int> res;
+    cout << "Выберите фильтр:" << endl << "1)По имени" << endl << "2)По статус 'в ремонте'" << "0) Выход" << endl;
+    int m = 0;
+    while (true) {
+        m = check<int>(0, 2);
+            if (m == 0) {
+                break;
+            }
+            else if (m == 1) {
+                cout << "Введите часть имени: "; 
+                string name = get_line(cin);
+                res = findwithFilter(Pipes, filterByNameP, name);
+                break;
+            }
+            else if (m == 2) {
+                cout << "Введите статус 'в ремонте'(0 = Не в ремонте, 1 = В ремонте): "; int status = check<int>(0, 1);
+                res = findwithFilter(Pipes, filterByRepairP, status);
+                break;
+            }
+    }
+    return res;
+}
+
+void edit(unordered_map<int, Pipe>& Pipes)
+{
+    for (auto& [id, P] : Pipes)
+        P.editPipe();
+    if (!Pipes.empty()) {
+        cout << "Статус 'в ремонте был изменён!" << endl;
+    }
+    else {
+        cout << "Нет объектов для редактирования!" << endl;
+    }
+}

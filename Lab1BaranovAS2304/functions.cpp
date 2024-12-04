@@ -108,3 +108,21 @@ void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
 
     in.close();
 }
+
+bool filterByNameP(const Pipe& P, string name) {
+    size_t pos = P.getName().find(name);
+    return pos != string::npos;
+}
+
+bool filterByRepairP(const Pipe& P, int repair) {
+    return P.getRepair() == repair;
+}
+
+bool filterByNameCS(const compressor_station& CS, string name) {
+    size_t pos = CS.getName().find(name);
+    return pos != string::npos;
+}
+
+bool filterByWork(const compressor_station& CS, float work) {
+    return CS.notinwork() == work;
+}

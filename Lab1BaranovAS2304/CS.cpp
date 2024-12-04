@@ -88,3 +88,56 @@ bool compressor_station::stopworkshop()
     else
         return 0;
 }
+
+unordered_set<int> selectByChosenFilter(unordered_map<int, compressor_station>& Stations) {
+    unordered_set<int> res;
+    cout << "Выберите фильтр:" << endl << "1)По имени" << endl << "2)По проценту нерабочих цехов (0–100): " << "0) Выход" << endl;
+    int m = 0;
+    while (true) {
+        m = check<int>(0, 2);
+        if (m == 0) {
+            break;
+        }
+        else if (m == 1) {
+            cout << "Введите часть имени: ";
+            string name = get_line(cin);
+            res = findwithFilter(Stations, filterByNameCS, name);
+            break;
+        }
+        else if (m == 2) {
+            cout << "Введите процент нерабочих цехов (0–100): "; float status = check<float>(0, 100);
+            res = findwithFilter(Stations, filterByWork, status);
+            break;
+        }
+    }
+    return res;
+}
+
+void edit(unordered_map<int, compressor_station>& Stations) {
+    if (!Stations.empty()) {
+        cout << "Что вы хотите сделать с КС" << endl << "1) Запустить 1 цех" << endl << "2) Остановить 1 цех" << "0) Выход" << endl;
+    }
+    else {
+        cout << "Нет объектов для редактирования!" << endl;
+    }
+    int m = 0;
+    while (true) {
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            for (auto& [id, cs] : Stations)
+                if (!cs.runworkshop())
+                    cout << "Невозможно изменить CS " << id << endl;
+            break;
+        }
+        if (m == 2) {
+            for (auto& [id, cs] : Stations)
+                if (!cs.stopworkshop())
+                    cout << "Невозможно изменить CS " << id << endl;
+
+            break;
+        }
+    }
+    if (!Stations.empty()) cout << "Редактирование выполненно!" << endl;
+}

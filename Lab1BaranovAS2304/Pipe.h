@@ -41,17 +41,18 @@ public:
     static Pipe newPipe();
     void editPipe();
 
-    string getName()
-    {
+    string getName() const {
         return Name;
     }
-    bool getRepair()
-    {
+
+    bool getRepair() const {
         return repair;
     }
+
     static int getmaxID() {
         return maxID;
     }
+
     static void setmaxID(int newID) {
         maxID = newID;
     }

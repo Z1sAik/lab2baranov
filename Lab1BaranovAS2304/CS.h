@@ -40,8 +40,7 @@ public:
         return id;
     }
     
-    string getName()
-    {
+    string getName() const {
         return Name;
     }
 
@@ -59,5 +58,7 @@ public:
     static void setmaxID(int newID) {
         maxID = newID;
     }
+
+    void edit();
 
 };
