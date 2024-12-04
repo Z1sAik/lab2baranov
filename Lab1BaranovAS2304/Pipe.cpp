@@ -1,20 +1,18 @@
 ﻿#include "functions.h"
 #include "Pipe.h"
 #include <iostream>
-#include <unordered_map>
 #include <fstream>
-#include <vector>
 
 using namespace std;
 
 int Pipe::maxID = 0;
 
 std::ostream& operator<<(std::ostream& out, const Pipe& P) {
-    out << "Pipe ID = " << P.id << endl
-        << "Имя: " << P.Name << endl
-        << "Длина: " << P.length << endl
-        << "Диаметр: " << P.diameter << endl
-        << "Efficiency: " << P.repair << endl;
+    out << "ID: " << P.id  
+        << "; Имя: " << P.Name 
+        << "; Длина: " << P.length 
+        << "; Диаметр: " << P.diameter 
+        << "; Статус 'в ремонте': " << boolalpha << P.repair << endl;
     return out;
 }
 
@@ -30,14 +28,15 @@ std::ofstream& operator<<(std::ofstream& fout, const Pipe& P) {
 }
 
 std::istream& operator>>(std::istream& in, Pipe& P) {
+    P.id = ++P.maxID;
     cout << "Создание новой трубы" << endl;
     cout << "ID: " << P.id << endl;
     cout << "Введите название трубы (на английском язык): ";
-    get_line(P.Name);
+    P.Name = get_line(in);
     cout << "Введите длину трубы в километрах: ";
-    P.length = check<float>(0.1, 0);
+    P.length = check<float>(0.1, INT_MAX);
     cout << "Введите диаметр трубы в миллиметрах: ";
-    P.diameter = check<int>(1, 0);
+    P.diameter = check<int>(1, INT_MAX);
     cout << "Выберите в каком состоянии труба: " << endl << "0)Не в ремонте" << endl << "1)В ремонте" << endl;
     P.repair = check<int>(0, 1);
     return in;
@@ -47,7 +46,7 @@ std::ifstream& operator>>(std::ifstream& fin, Pipe& P) {
     if (fin.is_open()) {
         fin >> P.id;
         fin.ignore();
-        getline(fin, P.Name);
+        getline(fin >> ws, P.Name);
         fin >> P.length;
         fin >> P.diameter;
         fin >> P.repair;

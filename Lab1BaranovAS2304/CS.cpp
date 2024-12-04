@@ -2,20 +2,18 @@
 #include "CS.h"
 #include "Pipe.h"
 #include <iostream>
-#include <unordered_map>
 #include <fstream>
-#include <vector>
 
 using namespace std;
 
 int compressor_station::maxID = 0;
 
 std::ostream& operator<<(std::ostream& out, const compressor_station& CS) {
-    out << "CS ID = " << CS.id << endl
-        << "Имя: " << CS.Name << endl
-        << "Кол-во цехов: " << CS.workshops << endl
-        << "Кол-во цехов в работе: " << CS.workshopsinwork << endl
-        << "Efficiency: " << CS.effectiveness << "%" << endl;
+    out << "ID: " << CS.id
+        << "; Имя: " << CS.Name 
+        << "; Кол-во цехов: " << CS.workshops
+        << "; Кол-во цехов в работе: " << CS.workshopsinwork 
+        << "; Эффективности: " << CS.effectiveness << "%" << endl;
     return out;
 }
 
@@ -31,10 +29,11 @@ std::ofstream& operator<<(std::ofstream& fout, const compressor_station& CS) {
 }
 
 std::istream& operator>>(std::istream& in, compressor_station& CS) {
+    CS.id = ++CS.maxID;
     cout << "Создание новой КС" << endl;
     cout << "ID: " << CS.id << endl;
     cout << "Введите название компрессорной станции (на английском язык): ";
-    get_line(CS.Name);
+    CS.Name = get_line(in);
     cout << "Введите кол-во цехов: ";
     CS.workshops = check<int>(0, INT_MAX);
     cout << "Введите кол-во цехов в работе: ";
@@ -48,7 +47,7 @@ std::ifstream& operator>>(std::ifstream& fin, compressor_station& CS) {
     if (fin.is_open()) {
         fin >> CS.id;
         fin.ignore();
-        getline(fin, CS.Name);
+        getline(fin >> ws, CS.Name);
         fin >> CS.workshops;
         fin >> CS.workshopsinwork;
         fin >> CS.effectiveness;

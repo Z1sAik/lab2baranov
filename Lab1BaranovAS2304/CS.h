@@ -44,11 +44,20 @@ public:
     {
         return Name;
     }
+
     float notinwork() const {
         if (workshops == 0) {
             return 0.0f;
         }
         return ((float)(workshops - workshopsinwork) / workshops) * 100;
+    }
+
+    static int getmaxID() {
+        return maxID;
+    }
+
+    static void setmaxID(int newID) {
+        maxID = newID;
     }
 
 };

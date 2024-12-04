@@ -36,6 +36,7 @@ public:
     friend istream& operator >> (istream& in, Pipe& P);
     friend ofstream& operator << (ofstream& fout, const Pipe& P);
     friend ifstream& operator >> (ifstream& fin, Pipe& P);
+
     static void resetMaxID();
     static Pipe newPipe();
     void editPipe();
@@ -47,5 +48,11 @@ public:
     bool getRepair()
     {
         return repair;
+    }
+    static int getmaxID() {
+        return maxID;
+    }
+    static void setmaxID(int newID) {
+        maxID = newID;
     }
 };
