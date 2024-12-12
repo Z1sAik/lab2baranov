@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
+#include <unordered_set>
 using namespace std;
 class compressor_station 
 {
@@ -31,10 +32,8 @@ public:
     friend ofstream& operator << (ofstream& fout, const compressor_station& cs);
     friend ifstream& operator >> (ifstream& fin, compressor_station& cs);
     static void resetMaxID();
-
     bool runworkshop();
     bool stopworkshop();
-
     int getID()
     {
         return id;
@@ -58,7 +57,4 @@ public:
     static void setmaxID(int newID) {
         maxID = newID;
     }
-
-    void edit();
-
 };

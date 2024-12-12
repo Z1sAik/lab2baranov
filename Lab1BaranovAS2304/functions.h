@@ -16,6 +16,7 @@ T check(T low, T max) {
     cin >> z;
     cin.ignore();
     while (true) {
+        cerr << z << endl;
         if (cin.fail()) {
             cout << "Ошибка. Введено не целое число или символ! Попробуйте ещё раз: ";
             cerr << z << endl;
@@ -96,55 +97,129 @@ unordered_set<int> selectByChosenID(unordered_map<int, T>& map, unordered_set<in
 {
     unordered_set<int> res;
     cout << "Введите нужные вам ID (для остановки введите -1)" << endl;
+
     while (true)
     {
-        int id = check<int>(0,INT_MAX);
+        int id = check<int>(-1, INT_MAX);
         if (id == -1)
             break;
+
         if (set.size() == 0)
         {
-            if (map.contains(id)) res.emplace(id);
+            if (map.contains(id)) {
+                res.emplace(id);
+                cout << "ID " << id << " добавлен в фильтр" << endl;
+            }
+            else {
+                cout << "ID " << id << " не найдено во всех id" << endl;
+            }
         }
         else
-            if (map.contains(id) and set.contains(id)) res.emplace(id);
+        {
+            if (map.contains(id) && set.contains(id)) {
+                res.emplace(id);
+                cout << "ID " << id << " добавлен в фильтр" << endl;
+            }
+            else {
+                if (!map.contains(id)) {
+                    cout << "ID " << id << " не найдено во всех id" << endl;
+                }
+                if (!set.contains(id)) {
+                    cout << "ID " << id << " не найдено в фильтре" << endl;
+                }
+            }
+        }
+    }
+    if (res.empty()) {
+        cout << "Не найдено ни одного подходящего ID." << endl;
     }
     return res;
-}
-void coutFoundWithId(unordered_set<int>& set)
-{
-    cout << "Найденные объекты с ID: ";
-    for (int id : set)
-        cout << id << " ";
-    cout << endl;
 }
 
 template<typename T>
 void editSelected(unordered_map<int, T>& map, unordered_set<int>& set) {
     int m = 0;
-    cout << "Выберите что вы хотите сделать:" << endl << "1) Посмотреть что содержится в фильтре" << endl << "2)Отредактировать отфильтрованные объекты" << endl << "3) Удалить отфильтрованные объекты" << endl "0)Выход" << endl << "Введите команду: ";
     while (true) {
+        cout << "Выберите что вы хотите сделать:" << endl << "1) Посмотреть что содержится в фильтре" << endl << "2) Отредактировать отфильтрованные объекты" << endl << "3) Удалить отфильтрованные объекты" << endl << "0) Выход" << endl << "Введите команду: ";
+        int m = check<int>(0, 3);
         if (m == 0) {
             break;
         }
         if (m == 1) {
             for (int id : set)
                 cout << map[id];
-            break;
         }
         if (m == 2) {
-            editMap(map);
-            break;
+            edit(map);
         }
         if (m == 3) {
             for (int id : set)
                 map.erase(id);
-            break;
         }
     }
 }
 
+template<typename T>
+void selectObjects(unordered_map<int, T>& map) {
+    unordered_set<int> res;
+    if (map.empty()) {
+        cout << "Вы ещё не добавили ни одного объекта!" << endl;
+        return;
+    }
+
+    cout << "Все объекты: " << endl;
+    view(map);
+    cout << "Выберите как вы хотите отфильтровать объекты?" << endl << "1) По id" << endl << "2) По характеристикам" << endl << "Введите команду: ";
+    int m = check<int>(1, 2);
+    if (m == 1)
+        res = selectByChosenID(map, res);
+    else if (m == 2)
+        res = selectByChosenFilter(map);
+    if (res.size() != 0) {
+        cout << "Найденные объекты с ID: ";
+        for (int id : res)
+            cout << id << " ";
+        cout << endl;
+        cout << "Вы хотите выбрать все или по ID?" << endl << "1) Вcе объекты" << endl << "2) По ID" << endl << "Введите команду: ";
+        int choice = check<int>(1, 2);
+        if (choice == 2) {
+            res = selectByChosenID(map, res);
+        }
+        if (res.size() != 0)
+            editSelected(map, res);
+        else
+            cout << "Вы ещё не добавили ни одного объекта!" << endl;
+    }
+    else {
+        cout << "Вы ещё не добавили ни одного объекта!" << endl;
+    }
+}
+
+class redirect_output_wrapper
+{
+    std::ostream& stream;
+    std::streambuf* const old_buf;
+public:
+    redirect_output_wrapper(std::ostream& src)
+        :old_buf(src.rdbuf()), stream(src)
+    {
+    }
+
+    ~redirect_output_wrapper() {
+        stream.rdbuf(old_buf);
+    }
+    void redirect(std::ostream& dest)
+    {
+        stream.rdbuf(dest.rdbuf());
+    }
+};
+
 int menu();
+void deleteAll(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
 string get_line(istream& in);
-//string generate_filename();
 void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
 void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
+unordered_set<int> selectByChosenFilter(unordered_map<int, Pipe>& Pipes);
+unordered_set<int> selectByChosenFilter(unordered_map<int, compressor_station>& Stations);
+void edit(unordered_map<int, compressor_station>& Stations);
+void edit(unordered_map<int, Pipe>& Pipes);

@@ -2,7 +2,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-
+#include <unordered_set>
+#include <unordered_map>
 using namespace std;
 
 class Pipe
@@ -36,11 +37,9 @@ public:
     friend istream& operator >> (istream& in, Pipe& P);
     friend ofstream& operator << (ofstream& fout, const Pipe& P);
     friend ifstream& operator >> (ifstream& fin, Pipe& P);
-
     static void resetMaxID();
     static Pipe newPipe();
     void editPipe();
-
     string getName() const {
         return Name;
     }

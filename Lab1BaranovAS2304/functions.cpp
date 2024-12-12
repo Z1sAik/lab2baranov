@@ -15,15 +15,14 @@ int menu() {
         cout << "///////  Меню  ///////" << endl
             << "1) Добавить трубу" << endl
             << "2) Добавить КС" << endl
-            << "3) Задать фильтр" << endl
-            << "4) Просмотр объектов" << endl
-            << "5) Редактировать трубу" << endl
-            << "6) Редактировать КС" << endl
-            << "7) Сохранить данные" << endl
-            << "8) Загрузить данные" << endl
-            << "9) Удаление объектов" << endl
+            << "3) Просмотр объектов" << endl
+            << "4) Редактировать трубу" << endl
+            << "5) Редактировать КС" << endl
+            << "6) Сохранить данные" << endl
+            << "7) Загрузить данные" << endl
+            << "8) Удаление объектов" << endl
             << "0) Выход" << endl
-            << "Введите команду которую вы бы хотели выполнить(от 0 до 9): ";
+            << "Введите команду которую вы бы хотели выполнить(от 0 до 8): ";
         k = check<int>(0, 9);
         return k;
     }
@@ -35,23 +34,6 @@ string get_line(istream& in) {
     cerr << input << endl;
     return input;
 }
-
-/*string generate_filename() {
-    time_t now = time(nullptr);
-    tm localTime;
-    localtime_s(&localTime, &now);
-
-    stringstream ss;
-    ss << "log_"
-        << localTime.tm_year + 1900 << "-"
-        << localTime.tm_mon + 1 << "-"
-        << localTime.tm_mday << "_"
-        << localTime.tm_hour << "-"
-        << localTime.tm_min << "-"
-        << localTime.tm_sec << ".txt";
-
-    return ss.str();
-}*/
 
 void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations) {
     string filename;
@@ -125,4 +107,119 @@ bool filterByNameCS(const compressor_station& CS, string name) {
 
 bool filterByWork(const compressor_station& CS, float work) {
     return CS.notinwork() == work;
+}
+
+unordered_set<int> selectByChosenFilter(unordered_map<int, compressor_station>& Stations) {
+    unordered_set<int> res;
+    cout << "Выберите фильтр:" << endl << "1) По имени" << endl << "2) По проценту нерабочих цехов (0–100): " << endl << "0) Выход" << endl;
+    int m = 0;
+    while (true) {
+        m = check<int>(0, 2);
+        if (m == 0) {
+            break;
+        }
+        else if (m == 1) {
+            cout << "Введите часть имени: ";
+            string name = get_line(cin);
+            res = findwithFilter(Stations, filterByNameCS, name);
+            break;
+        }
+        else if (m == 2) {
+            cout << "Введите процент нерабочих цехов (0–100): "; float status = check<float>(0, 100);
+            res = findwithFilter(Stations, filterByWork, status);
+            break;
+        }
+    }
+    return res;
+}
+
+unordered_set<int> selectByChosenFilter(unordered_map<int, Pipe>& Pipes) {
+    unordered_set<int> res;
+    cout << "Выберите фильтр:" << endl << "1) По имени" << endl << "2) По статус 'в ремонте'" <<endl << "0) Выход" << endl;
+    int m = 0;
+    while (true) {
+        m = check<int>(0, 2);
+        if (m == 0) {
+            break;
+        }
+        else if (m == 1) {
+            cout << "Введите часть имени: ";
+            string name = get_line(cin);
+            res = findwithFilter(Pipes, filterByNameP, name);
+            break;
+        }
+        else if (m == 2) {
+            cout << "Введите статус 'в ремонте'(0 = Не в ремонте, 1 = В ремонте): "; int status = check<int>(0, 1);
+            res = findwithFilter(Pipes, filterByRepairP, status);
+            break;
+        }
+    }
+    return res;
+}
+
+void edit(unordered_map<int, Pipe>& Pipes)
+{
+    for (auto& [id, P] : Pipes)
+        P.editPipe();
+    if (!Pipes.empty()) {
+        cout << "Статус 'в ремонте был изменён!" << endl;
+    }
+    else {
+        cout << "Нет объектов для редактирования!" << endl;
+    }
+}
+
+void deleteAll(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations){
+    if (Pipes.empty() && Stations.empty())
+    {
+        cout << "Вы ещё не добавили ни одного объекта!" << endl;
+        return;
+    }
+    else {
+        Pipe::resetMaxID();
+        compressor_station::resetMaxID();
+        Pipes.clear();
+        Stations.clear();
+        cout << "Все объекты были удалены" << endl;
+    }
+    return;
+}
+
+
+void edit(unordered_map<int, compressor_station>& Stations) {
+    if (!Stations.empty()) {
+        cout << "Что вы хотите сделать с КС" << endl
+            << "1) Запустить 1 цех" << endl
+            << "2) Остановить 1 цех" << endl
+            << "0) Выход" << endl;
+    }
+    else {
+        cout << "Нет объектов для редактирования!" << endl;
+    }
+    int m = 0;
+    while (true) {
+        m = check<int>(0, 2);
+        if (m == 0) {
+            break;
+        }
+        if (m == 1) {
+            for (auto& [id, cs] : Stations) {
+                cout << "Увеличено кол-во цехов в работе на один у КС c ID: " << id << endl;
+                if (!cs.runworkshop()) {
+                    cout << "Невозможно изменить CS " << id << endl;
+                }
+            }
+        }
+        if (m == 2) {
+            for (auto& [id, cs] : Stations) {
+                cout << "Уменьшено кол-во цехов в работе на один у КС c ID: " << id << endl;
+                if (!cs.stopworkshop()) {
+                    cout << "Невозможно изменить CS " << id << endl;
+                }
+            }
+        }
+    }
+    if (!Stations.empty()) {
+        cout << "Редактирование выполнено!" << endl;
+    }
 }

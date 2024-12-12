@@ -5,9 +5,19 @@
 #include "CS.h"
 #include <unordered_map>
 #include "functions.h"
+#include <format>
+#include <chrono>
+
 using namespace std;
+using namespace chrono;
 
 int main() {
+    redirect_output_wrapper cerr_out(cerr);
+    string time = std::format("{:%d_%m_%Y %H_%M_%OS}", system_clock::now());
+    ofstream logfile("log_" + time +".txt");
+    if (logfile)
+        cerr_out.redirect(logfile);
+
     setlocale(LC_ALL, "RU"); 
     unordered_map<int, Pipe> Pipes = {};
     unordered_map<int, compressor_station> Stations = {};
@@ -25,13 +35,9 @@ int main() {
             Stations.emplace(CS.getID(), CS);
         }
         else if (k == 3) {
-            //filter(Pipes, Stations,filt_keys_Pipe,filt_keys_CS);
-        }
-        else if (k == 4) {
             if (Pipes.empty() && Stations.empty()) {
                 cout << "Вы ещё не добавили ни одного объекта" << endl;
             }
-
             else
             {
                 cout << "Все трубы:" << endl; 
@@ -40,20 +46,20 @@ int main() {
                 view(Stations);
             }
         }
+        else if (k == 4) {
+            selectObjects(Pipes);
+        }
         else if (k == 5) {
-            //edit_filtered_objects(Pipes, filt_keys_Pipe,show_Pipe,edit_single_Pipe);
+            selectObjects(Stations);
         }
         else if (k == 6) {
-            //edit_filtered_objects(Stations, filt_keys_CS,show_cs,edit_single_CS);
-        }
-        else if (k == 7) {
             save(Pipes, Stations);
         }
-        else if (k == 8) {
+        else if (k == 7) {
             load(Pipes, Stations);
         }
-        else if (k == 9) {
-            //remove_objects(Pipes, Stations, filt_keys_Pipe, filt_keys_CS);
+        else if (k == 8) {
+            deleteAll(Pipes, Stations);
         }
     }
     return 0;
