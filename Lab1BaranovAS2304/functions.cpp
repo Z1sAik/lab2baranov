@@ -157,10 +157,10 @@ unordered_set<int> selectByChosenFilter(unordered_map<int, Pipe>& Pipes) {
     return res;
 }
 
-void edit(unordered_map<int, Pipe>& Pipes)
+void edit(unordered_map<int, Pipe>& Pipes, int id)
 {
-    for (auto& [id, P] : Pipes)
-        P.editPipe();
+    auto it = Pipes.find(id);
+    it->second.editPipe();
     if (!Pipes.empty()) {
         cout << "Статус 'в ремонте был изменён!" << endl;
     }
@@ -186,7 +186,7 @@ void deleteAll(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_st
 }
 
 
-void edit(unordered_map<int, compressor_station>& Stations) {
+void edit(unordered_map<int, compressor_station>& Stations, int id) {
     if (!Stations.empty()) {
         cout << "Что вы хотите сделать с КС" << endl
             << "1) Запустить 1 цех" << endl
@@ -203,20 +203,15 @@ void edit(unordered_map<int, compressor_station>& Stations) {
             break;
         }
         if (m == 1) {
-            for (auto& [id, cs] : Stations) {
+                auto it = Stations.find(id);
+                it->second.runworkshop();
                 cout << "Увеличено кол-во цехов в работе на один у КС c ID: " << id << endl;
-                if (!cs.runworkshop()) {
-                    cout << "Невозможно изменить CS " << id << endl;
-                }
-            }
+                
         }
         if (m == 2) {
-            for (auto& [id, cs] : Stations) {
-                cout << "Уменьшено кол-во цехов в работе на один у КС c ID: " << id << endl;
-                if (!cs.stopworkshop()) {
-                    cout << "Невозможно изменить CS " << id << endl;
-                }
-            }
+                auto it = Stations.find(id);
+                it->second.stopworkshop();
+                cout << "Невозможно изменить CS " << id << endl;
         }
     }
     if (!Stations.empty()) {

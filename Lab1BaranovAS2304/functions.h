@@ -150,7 +150,8 @@ void editSelected(unordered_map<int, T>& map, unordered_set<int>& set) {
                 cout << map[id];
         }
         if (m == 2) {
-            edit(map);
+            for (int id : set)
+            edit(map,id);
         }
         if (m == 3) {
             for (int id : set)
@@ -221,5 +222,5 @@ void save(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station
 void load(unordered_map<int, Pipe>& Pipes, unordered_map<int, compressor_station>& Stations);
 unordered_set<int> selectByChosenFilter(unordered_map<int, Pipe>& Pipes);
 unordered_set<int> selectByChosenFilter(unordered_map<int, compressor_station>& Stations);
-void edit(unordered_map<int, compressor_station>& Stations);
-void edit(unordered_map<int, Pipe>& Pipes);
+void edit(unordered_map<int, compressor_station>& Stations, int id);
+void edit(unordered_map<int, Pipe>& Pipes, int id);
